@@ -49,7 +49,7 @@ public class DAO {
         try (Connection con = cM.getConnection())
         {
         PreparedStatement stmt;
-        stmt = con.prepareStatement("DELETE FROM Song WEHERE id = ?");
+        stmt = con.prepareStatement("DELETE FROM Song WHERE id = ?");
         stmt.setInt(1, id);
         stmt.executeUpdate();
         }
