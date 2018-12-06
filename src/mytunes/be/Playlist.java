@@ -19,9 +19,9 @@ public class Playlist
     private int id;
 
     
-    public Playlist(String name)
+    public Playlist()
         {
-        this.name = name;
+
         }
     public String getName()
         {

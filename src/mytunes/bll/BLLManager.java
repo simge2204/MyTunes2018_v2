@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package MyTunes.bll;
+import MyTunes.be.Playlist;
 import java.sql.SQLException;
 import MyTunes.dal.DAO;
 import MyTunes.be.Song;
@@ -36,4 +37,33 @@ public class BLLManager {
     {
         DAO.deleteSong(id);
     }
+    
+    public List<Playlist> getAllPlaylists(String search)
+        {
+        return DAO.getAllPlaylists(search);
+        }
+    
+    public void addPlaylist(String playName) throws SQLException
+        {
+        DAO.addPlaylist(playName);
+        }
+    public void deletePlaylistSong(Playlist playlist)
+        {
+        DAO.deletePlaylistSong(playlist);
+        }
+    
+    public void deletePlayList(Playlist pl)
+        {
+        DAO.deletePlaylist(pl);
+        }
+    
+    public void updatePlaylist(Playlist playlist)
+        {
+        DAO.updatePlaylist(playlist);
+        }
+    
+    public Playlist createPlaylist(String name)
+        {
+        return DAO.createPlaylist(name);
+        }
 }
