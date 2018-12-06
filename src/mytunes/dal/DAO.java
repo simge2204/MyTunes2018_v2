@@ -105,4 +105,21 @@ public class DAO {
        
         return songs;
     }
+    
+    public void editSong(Song song) {
+             try (Connection con = cM.getConnection()) {
+            PreparedStatement stmt = con.prepareStatement("UPDATE Song SET name=?, artist=?, genre=?, length=?, path=? WHERE id=?");
+            stmt.setInt(6, song.getId());
+            stmt.setString(1, song.getTitle());
+            stmt.setString(2, song.getArtist());
+            stmt.setString(3, song.getGenre());
+            stmt.setString(4, song.getTime());
+            stmt.setString(5, song.getPath());
+            stmt.executeUpdate();
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
 }

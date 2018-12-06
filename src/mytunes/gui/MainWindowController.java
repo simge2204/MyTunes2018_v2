@@ -158,9 +158,21 @@ public class MainWindowController implements Initializable {
     }
 
     @FXML
-    private void editSong(ActionEvent event) {
+    private void editSong(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("CreateSong.fxml"));
+        Parent root1 = (Parent) fxmlLoader.load();
+        Stage stage = new Stage();
+        MyTunes.gui.CreateSongController apwController=fxmlLoader.getController();
+        apwController.setSongModel(SongModel);
+        apwController.setMainWindowController(this);
+        apwController.setEdit();
+        Song selectedSong = songsfelt.getSelectionModel().getSelectedItem();
+        apwController.setSong(selectedSong);
+        stage.setTitle("CreateSong");
+        stage.setScene(new Scene(root1));
+        stage.show();
     }
-
+    
     @FXML
     private void newSong(ActionEvent event) throws SQLException, IOException {
         
@@ -170,6 +182,7 @@ public class MainWindowController implements Initializable {
         MyTunes.gui.CreateSongController apwController=fxmlLoader.getController();
         apwController.setSongModel(SongModel);
         apwController.setMainWindowController(this);
+        apwController.setNew();
         stage.setTitle("CreateSong");
         stage.setScene(new Scene(root1));
         stage.show();

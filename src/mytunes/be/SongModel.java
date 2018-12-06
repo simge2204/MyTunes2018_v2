@@ -61,5 +61,9 @@ public class SongModel
     public void addSong(String title, String artist, String genre, String time, String path) throws SQLException {
         bllManager.addSong(title, artist, genre, time, path);
     }
+    
+    public void editSong(Song song) {
+        bllManager.editSong(song);
     }
+}
 

@@ -27,4 +27,8 @@ public class BLLManager {
     public List<Song> getAllSongs(String search){
         return DAO.getAllSongs(search);
     }
+    
+    public void editSong(Song song) {
+        DAO.editSong(song);
+    }
 }

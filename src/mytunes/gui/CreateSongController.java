@@ -5,6 +5,7 @@
  */
 package MyTunes.gui;
 
+import MyTunes.be.Song;
 import MyTunes.be.SongModel;
 import java.net.URL;
 import java.sql.SQLException;
@@ -22,8 +23,10 @@ import javafx.stage.Stage;
  * @author kedde
  */
 public class CreateSongController implements Initializable {
-MyTunes.be.SongModel songModel;
-MyTunes.gui.MainWindowController mainWindowController;
+    MyTunes.be.SongModel songModel;
+    MyTunes.gui.MainWindowController mainWindowController;
+    private Song selectedSong;
+    int type;
     @FXML
     private TextField TimeField;
     @FXML
@@ -51,10 +54,26 @@ MyTunes.gui.MainWindowController mainWindowController;
         String genre=GenreField.getText();
         String time=TimeField.getText();
         String path=PathField.getText();
-        
-        songModel.addSong(title, artist, genre, time, path);
-        mainWindowController.reload();
         Stage stage = (Stage) AddSongBtn.getScene().getWindow();
+        switch (type) {
+            case 1:
+                songModel.addSong(title, artist, genre, time, path);
+                break;
+            case 2:
+                selectedSong.setTitle(title);
+                selectedSong.setArtist(artist);
+                selectedSong.setGenre(genre);
+                selectedSong.setTime(time);
+                selectedSong.setPath(path);
+                songModel.editSong(selectedSong);
+                break;
+            default:
+                System.out.println("Something went wrong");
+                stage.close();
+                break;
+        }
+        
+        mainWindowController.reload();
         stage.close();
     }
     
@@ -64,5 +83,19 @@ MyTunes.gui.MainWindowController mainWindowController;
     }
     public void setMainWindowController(MainWindowController mainWindowControler) {
         this.mainWindowController = mainWindowControler;
+    }
+    public void setEdit() {
+        type = 2;
+    }
+    public void setNew() {
+        type = 1;
+    }
+    public void setSong(Song selectedSong) {
+        this.selectedSong = selectedSong;
+        TitleField.setText(selectedSong.getTitle());
+        ArtistField.setText(selectedSong.getArtist());
+        GenreField.setText(selectedSong.getGenre());
+        TimeField.setText(selectedSong.getTime());
+        PathField.setText(selectedSong.getPath());
     }
 }
