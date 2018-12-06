@@ -65,5 +65,10 @@ public class SongModel
     public void editSong(Song song) {
         bllManager.editSong(song);
     }
+    
+      public void deleteSong(int id) throws SQLException
+    {
+        bllManager.deleteSong(id);
+    }
 }
 

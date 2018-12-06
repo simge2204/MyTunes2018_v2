@@ -6,8 +6,10 @@
 package MyTunes.gui;
 
 import MyTunes.be.PlaylistModel;
+import MyTunes.be.Song;
 import MyTunes.be.SongModel;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -23,8 +25,9 @@ import javafx.stage.Stage;
  */
 public class DeleteSongController implements Initializable
 {
-    MyTunes.be.PlaylistModel playlistModel;
+    MyTunes.be.SongModel SongModel;
     MyTunes.gui.MainWindowController mainWindowController;
+    private Song selectedSong;
     @FXML
     private Label Tekst;
     @FXML
@@ -43,9 +46,9 @@ public class DeleteSongController implements Initializable
         // TODO
     }    
     
-     void setSongModel(PlaylistModel playlistModel)
+     void setSongModel(SongModel songModel)
     {
-        this.playlistModel = playlistModel;
+        this.SongModel = songModel;
     }
     
     
@@ -55,9 +58,9 @@ public class DeleteSongController implements Initializable
     }
 
     @FXML
-    private void jatak(ActionEvent event)
+    private void jatak(ActionEvent event) throws SQLException
     {
-        
+        SongModel.deleteSong(selectedSong.getId());
         
         Stage stage = (Stage) ja.getScene().getWindow();
         stage.close();
@@ -70,5 +73,13 @@ public class DeleteSongController implements Initializable
         stage.close();
     }
 
+   public void setSong(Song selectedSong) 
+   {
+        this.selectedSong = selectedSong;
+   }
    
+   public void setLabel(Song song)
+   {
+       Tekst.setText("Are you sure you want to delete " + song.getTitle() + "?");
+   }
 }

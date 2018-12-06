@@ -150,8 +150,11 @@ public class MainWindowController implements Initializable {
         Parent root3 = (Parent)fxmlLoader.load();
         Stage stage = new Stage();
         MyTunes.gui.DeleteSongController DSController = fxmlLoader.getController();
-        DSController.setSongModel(playlistModel);
+        DSController.setSongModel(SongModel);
         DSController.setMainWindowController(this);
+        Song selectedSong = songsfelt.getSelectionModel().getSelectedItem();
+        DSController.setSong(selectedSong);
+        DSController.setLabel(selectedSong);
         stage.setTitle("DeleteSong");
         stage.setScene(new Scene(root3));
         stage.show();

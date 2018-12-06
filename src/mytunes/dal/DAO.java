@@ -44,14 +44,19 @@ public class DAO {
         }
     }
     
-     public void deleteSong() throws SQLServerException, SQLException
+     public void deleteSong(int id) throws SQLServerException, SQLException
     {
         try (Connection con = cM.getConnection())
         {
         PreparedStatement stmt;
         stmt = con.prepareStatement("DELETE FROM Song WEHERE id = ?");
-        stmt.setString(1, "id");
+        stmt.setInt(1, id);
         stmt.executeUpdate();
+        }
+        
+        catch (SQLException ex) 
+        {
+            Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }    
     

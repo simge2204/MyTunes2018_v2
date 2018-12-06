@@ -31,4 +31,9 @@ public class BLLManager {
     public void editSong(Song song) {
         DAO.editSong(song);
     }
+    
+    public void deleteSong(int id) throws SQLException
+    {
+        DAO.deleteSong(id);
+    }
 }
