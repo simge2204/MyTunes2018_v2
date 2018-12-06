@@ -193,4 +193,9 @@ public class MainWindowController implements Initializable {
         System.exit(0);
     }
     
+    public void reload() {
+        songsfelt.setItems(SongModel.getSongs());
+        SongModel.loadSongs();
+    }
+    
 }

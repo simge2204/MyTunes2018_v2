@@ -12,6 +12,7 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -33,6 +34,8 @@ MyTunes.gui.MainWindowController mainWindowController;
     private TextField ArtistField;
     @FXML
     private TextField PathField;
+    @FXML
+    private Button AddSongBtn;
     /**
      * Initializes the controller class.
      */
@@ -41,6 +44,7 @@ MyTunes.gui.MainWindowController mainWindowController;
         // TODO
     }
     
+    @FXML
     public void PressAddSong(ActionEvent event) throws SQLException {
         String title=TitleField.getText();
         String artist=ArtistField.getText();
@@ -49,7 +53,9 @@ MyTunes.gui.MainWindowController mainWindowController;
         String path=PathField.getText();
         
         songModel.addSong(title, artist, genre, time, path);
-        
+        mainWindowController.reload();
+        Stage stage = (Stage) AddSongBtn.getScene().getWindow();
+        stage.close();
     }
     
     
@@ -57,6 +63,6 @@ MyTunes.gui.MainWindowController mainWindowController;
         this.songModel = SongModel;
     }
     public void setMainWindowController(MainWindowController mainWindowControler) {
-        this.mainWindowController =mainWindowControler;
+        this.mainWindowController = mainWindowControler;
     }
 }
