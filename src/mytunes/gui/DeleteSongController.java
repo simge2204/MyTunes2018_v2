@@ -14,6 +14,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -56,11 +57,17 @@ public class DeleteSongController implements Initializable
     @FXML
     private void jatak(ActionEvent event)
     {
+        
+        
+        Stage stage = (Stage) ja.getScene().getWindow();
+        stage.close();
     }
 
     @FXML
     private void Nejtak(ActionEvent event)
     {
+        Stage stage = (Stage) Nej.getScene().getWindow();
+        stage.close();
     }
 
    
