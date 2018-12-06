@@ -38,9 +38,9 @@ public class BLLManager {
         DAO.deleteSong(id);
     }
     
-    public List<Playlist> getAllPlaylists(String search)
+    public List<Playlist> getAllPlaylists()
         {
-        return DAO.getAllPlaylists(search);
+        return DAO.getAllPlaylists();
         }
     
     public void addPlaylist(String playName) throws SQLException
@@ -49,21 +49,22 @@ public class BLLManager {
         }
     public void deletePlaylistSong(Playlist playlist)
         {
-        DAO.deletePlaylistSong(playlist);
+        //DAO.deletePlaylistSong(playlist);
         }
     
     public void deletePlayList(Playlist pl)
         {
-        DAO.deletePlaylist(pl);
+        //DAO.deletePlaylist(pl);
         }
     
     public void updatePlaylist(Playlist playlist)
         {
-        DAO.updatePlaylist(playlist);
+        //DAO.updatePlaylist(playlist);
         }
     
-    public Playlist createPlaylist(String name)
+    public void createPlaylist(String name)
         {
-        return DAO.createPlaylist(name);
+          //DAO.createPlaylist(name);
         }
+    
 }

@@ -35,7 +35,7 @@ public class MainWindowController implements Initializable {
     
     MyTunes.bll.BLLManager BLL = new MyTunes.bll.BLLManager();
     MyTunes.be.SongModel SongModel = new MyTunes.be.SongModel();
-    MyTunes.be.PlaylistModel playlistModel = new MyTunes.be.PlaylistModel();
+    MyTunes.be.PlaylistModel PlaylistModel = new MyTunes.be.PlaylistModel();
     @FXML
     private Label label;
     @FXML
@@ -109,6 +109,8 @@ public class MainWindowController implements Initializable {
         playTime.setCellValueFactory(new PropertyValueFactory("time"));
         songsfelt.setItems(SongModel.getSongs());
         SongModel.loadSongs();
+        playlistfelt.setItems(PlaylistModel.getPlaylists());
+        PlaylistModel.loadPlaylists();
 //        playlistfelt.setItems(PlaylistModel.getAllPlaylists());
 
     }    
@@ -120,7 +122,7 @@ public class MainWindowController implements Initializable {
         Parent root2 = (Parent)fxmlLoader.load();
         Stage stage = new Stage();
         MyTunes.gui.CreatePlaylistController cpController = fxmlLoader.getController();
-        cpController.setPlaylistModel(playlistModel);
+        cpController.setPlaylistModel(PlaylistModel);
         cpController.setMainWindowController(this);
         stage.setTitle("CreatePlaylist");
         stage.setScene(new Scene(root2));

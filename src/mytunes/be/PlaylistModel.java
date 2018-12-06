@@ -16,6 +16,7 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import MyTunes.be.Playlist;
 import MyTunes.be.Song;
+import MyTunes.bll.BLLManager;
 import MyTunes.dal.ConnectionManager;
 import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
@@ -26,6 +27,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 /**
  *
@@ -33,7 +36,9 @@ import java.util.logging.Logger;
  */
 public class PlaylistModel
     {
+    private BLLManager bllManager = new BLLManager();
     ConnectionManager cM = new ConnectionManager();
+    private ObservableList<Playlist> playlists = FXCollections.observableArrayList();
     List<Playlist> pl;
     private int currentSong;
     private boolean isPlaying;
@@ -42,38 +47,19 @@ public class PlaylistModel
     SQLServerDataSource ds;
 
     //file that contains song list
-    File songlist = new File("");
-//    String path = songlist.getPath();
+    
 
-    /*public List<Playlist> getAllPlaylists() throws SQLServerException, SQLException
-        {
-        List<Playlist> pllist = new ArrayList<>();
-        try (Connection con = ds.getConnection()) {
-            String sqlStatement = "SELECT * FROM Playlist";
-            Statement statement = con.createStatement();
-            ResultSet rs = statement.executeQuery(sqlStatement);
-            while (rs.next()) 
-            {
-                String name = rs.getString("name");
-                int id = rs.getInt("id");
-                List<Song> allSongs = playm.getSongs(id); //Puts all songs into the playlist
-                Playlist pl = new Playlist(allSongs.size(), countTotalTime(allSongs), name, id); //Creates a new playlist object
-                pl.setSongs(allSongs); // Sets up the song list
-                pllist.add(pl); // Adds the playlist to the playlist array
-            }
-            return pllist; // Returns the playlists
-        } 
-        catch (SQLServerException ex) 
-        {
-            System.out.println(ex);
-        } 
-        catch (SQLException ex) 
-        {
-            System.out.println(ex);
-        }
-        return null;
-        }
-*/
+    public ObservableList<Playlist> getPlaylists() {
+        return playlists;
+    }
+    
+    public void loadPlaylists()
+    {
+        List<Playlist> loadedPlaylists = bllManager.getAllPlaylists();
+        
+        playlists.clear();
+        playlists.addAll(loadedPlaylists);
+    }
     
     //creates a new playlist with a given name
     public Playlist createPlayList(String name)
@@ -89,7 +75,7 @@ public class PlaylistModel
         } catch (SQLException ex) {
             System.out.println(ex);
         }
-        Playlist play = new Playlist(name);
+        Playlist play = new Playlist();
         return play;
         }
 
@@ -126,13 +112,14 @@ public class PlaylistModel
         }
 
     //play a song in a playlist
+    /*
     public void playSong(Song song)
         {
         Media hit = new Media(new File(songlist.getPath()).toURI().toString());
         mediaPlayer = new MediaPlayer(hit);
         mediaPlayer.play();
         }
-
+    */
     //play next song in a playlist
     public void playNextSong(Song song)
         {
@@ -218,7 +205,7 @@ public class PlaylistModel
                     PreparedStatement ps = con.prepareStatement(
                             "UPDATE Playlist SET name = (?), songs= (?) WHERE id = (?)");
                     ps.setString(1, playlist.getName());
-                    ps.setInt(2, playlist.songs.size());
+                    //ps.setInt(2, playlist.songs.size());
                     ps.setString(3, playlist.getTotalTime());
                     ps.setInt(4, id);
                     ps.execute();

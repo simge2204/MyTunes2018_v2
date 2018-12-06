@@ -5,6 +5,7 @@
  */
 package MyTunes.dal;
 
+import MyTunes.be.Playlist;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -126,5 +127,33 @@ public class DAO {
             Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+    }
+    
+    public List<Playlist> getAllPlaylists() {
+        
+        List<Playlist> playlists = new ArrayList();
+      
+        try (Connection con = cM.getConnection()){
+            PreparedStatement stmt;
+            stmt = con.prepareStatement("SELECT * FROM Playlist");
+            ResultSet rs = stmt.executeQuery();
+            
+            while(rs.next())
+            {
+                Playlist currentPlaylist = new Playlist();
+                currentPlaylist.setId(rs.getInt("id"));
+                currentPlaylist.setName(rs.getString("name"));
+                currentPlaylist.setSongs(rs.getInt("songs"));
+                currentPlaylist.setTotalTime(rs.getString("length"));
+                
+                playlists.add(currentPlaylist);
+            }
+        } 
+        catch (SQLException ex) {
+            Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+       
+        return playlists;
     }
 }

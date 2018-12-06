@@ -14,7 +14,7 @@ import java.util.List;
 public class Playlist
     {
     private String name;
-    public List<Song> songs;
+    public int songs;
     private String totaltime;
     private int id;
 
@@ -39,11 +39,11 @@ public class Playlist
         {
         this.id = id;
         }
-    public List<Song> getSongs()
+    public int getSongs()
         {
         return songs;
         }
-    public void setSongs(List<Song> songs)
+    public void setSongs(int songs)
         {
         this.songs = songs;
         }
@@ -59,6 +59,6 @@ public class Playlist
     @Override
     public String toString()
         {
-        return "Playlist{" + "name=" + name + ", songs=" + songs.size() + "time=" + getTotalTime() + '}';
+        return "Playlist{" + "name=" + name + ", songs=" + songs + "time=" + getTotalTime() + '}';
         }
     }
