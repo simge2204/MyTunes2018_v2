@@ -4,11 +4,10 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="239.0" prefWidth="298.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/10.0.1" fx:controller="mytunes.gui.DeleteSongController">
+<AnchorPane id="AnchorPane" prefHeight="239.0" prefWidth="298.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MyTunes.gui.DeleteSongController">
    <children>
-      <Label layoutX="135.0" layoutY="67.0" prefHeight="18.0" prefWidth="44.0" text="Label" />
-      <Button layoutX="73.0" layoutY="110.0" mnemonicParsing="false" text="Ja" />
-      <Button layoutX="185.0" layoutY="107.0" mnemonicParsing="false" text="Nej" />
+      <Label fx:id="Tekst" layoutX="135.0" layoutY="67.0" prefHeight="18.0" prefWidth="44.0" text="Label" />
+      <Button fx:id="ja" layoutX="73.0" layoutY="110.0" mnemonicParsing="false" onAction="#jatak" text="Ja" />
+      <Button fx:id="Nej" layoutX="185.0" layoutY="107.0" mnemonicParsing="false" onAction="#Nejtak" text="Nej" />
    </children>
 </AnchorPane>

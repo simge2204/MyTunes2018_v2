@@ -84,8 +84,7 @@ public class DAO {
             stmt = con.prepareStatement("SELECT * FROM Song WHERE Name like ? OR Artist like ?");
             stmt.setString(1, "%"+search+"%");
             stmt.setString(2, "%"+search+"%");
-            ResultSet rs =
-                    stmt.executeQuery();
+            ResultSet rs = stmt.executeQuery();
             
             while(rs.next())
             {
