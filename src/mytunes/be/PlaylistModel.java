@@ -16,11 +16,16 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import MyTunes.be.Playlist;
 import MyTunes.be.Song;
+import MyTunes.dal.ConnectionManager;
 import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -28,7 +33,8 @@ import java.sql.SQLException;
  */
 public class PlaylistModel
     {
-//    PlaylistModel playm = new PlaylistModel();
+    PlaylistModel playm = new PlaylistModel();
+    ConnectionManager cM = new ConnectionManager();
     List<Playlist> pl;
     private int currentSong;
     private boolean isPlaying;
@@ -40,8 +46,38 @@ public class PlaylistModel
     File songlist = new File("");
 //    String path = songlist.getPath();
 
+    /*public List<Playlist> getAllPlaylists() throws SQLServerException, SQLException
+        {
+        List<Playlist> pllist = new ArrayList<>();
+        try (Connection con = ds.getConnection()) {
+            String sqlStatement = "SELECT * FROM Playlist";
+            Statement statement = con.createStatement();
+            ResultSet rs = statement.executeQuery(sqlStatement);
+            while (rs.next()) 
+            {
+                String name = rs.getString("name");
+                int id = rs.getInt("id");
+                List<Song> allSongs = playm.getSongs(id); //Puts all songs into the playlist
+                Playlist pl = new Playlist(allSongs.size(), countTotalTime(allSongs), name, id); //Creates a new playlist object
+                pl.setSongs(allSongs); // Sets up the song list
+                pllist.add(pl); // Adds the playlist to the playlist array
+            }
+            return pllist; // Returns the playlists
+        } 
+        catch (SQLServerException ex) 
+        {
+            System.out.println(ex);
+        } 
+        catch (SQLException ex) 
+        {
+            System.out.println(ex);
+        }
+        return null;
+        }
+*/
+    
     //creates a new playlist with a given name
-    public void createPlayList(String name)
+    public Playlist createPlayList(String name)
         {
         String sql = "INSERT INTO Playlist(name) VALUES(?)";
         try (Connection con = ds.getConnection()) {
@@ -55,6 +91,7 @@ public class PlaylistModel
             System.out.println(ex);
         }
         Playlist play = new Playlist(name);
+        return play;
         }
 
     //add a song to a playlist
@@ -76,6 +113,17 @@ public class PlaylistModel
             System.out.println(ex);
         }
         //pl.getSongs().add(song);
+        }
+    
+    public void addPlaylist(String playName) throws SQLException
+        {
+        try (Connection con = cM.getConnection())
+        {
+            PreparedStatement stmt;
+            stmt = con.prepareStatement("INSERT INTO Playlist(Name) VALUES(?)");
+            stmt.setString(1, playName);
+            stmt.executeUpdate();
+        }
         }
 
     //play a song in a playlist
@@ -105,7 +153,7 @@ public class PlaylistModel
         }
     
     //total time of songs in a playlist
-    /*public int countTotalTime(List<Song> songs)
+    public int countTotalTime(List<Song> songs)
         {
         int totalTime = Integer.parseInt(totaltime);
         totalTime = 0;
@@ -115,7 +163,7 @@ public class PlaylistModel
         }
         return totalTime;
         }
-    */
+    
     //delete a song from a playlist
     public void deleteSong(Song song) throws FileNotFoundException
         {
@@ -155,5 +203,29 @@ public class PlaylistModel
         }
 //        pl.getSongs().remove(song);
 
+        }
+    
+    //updates playlist
+    public void updatePlaylist(Playlist playlist) throws SQLException
+        {
+        int id = playlist.getId();
+
+        try (Connection con = ds.getConnection()) 
+        {
+            Statement statement = con.createStatement();
+            ResultSet rs = statement.executeQuery("Select * FROM Playlist;");
+            while (rs.next()) {
+                if (rs.getInt("id") == id) {
+                    PreparedStatement ps = con.prepareStatement(
+                            "UPDATE Playlist SET name = (?), songs= (?) WHERE id = (?)");
+                    ps.setString(1, playlist.getName());
+                    ps.setInt(2, playlist.songs.size());
+                    ps.setString(3, playlist.getTotalTime());
+                    ps.setInt(4, id);
+                    ps.execute();
+                    ps.close();
+                }
+            }
+        }
         }
     }

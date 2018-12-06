@@ -63,7 +63,7 @@ public class MainWindowController implements Initializable {
     @FXML
     private Button næste;
     @FXML
-    private TableView<PlaylistModel> playlistfelt;
+    private TableView<Playlist> playlistfelt;
     @FXML
     private TableColumn<Playlist, String> name;
     @FXML
@@ -95,7 +95,7 @@ public class MainWindowController implements Initializable {
     private void handleButtonAction(ActionEvent event)
         {
         PlaylistModel model = new PlaylistModel();
-        model.createPlayList("happy");
+//        model.createPlayList("happy");
         }
     
     @Override
@@ -109,6 +109,7 @@ public class MainWindowController implements Initializable {
         playTime.setCellValueFactory(new PropertyValueFactory("time"));
         songsfelt.setItems(SongModel.getSongs());
         SongModel.loadSongs();
+//        playlistfelt.setItems(PlaylistModel.getAllPlaylists());
 
     }    
 

@@ -59,7 +59,7 @@ public class CreatePlaylistController implements Initializable
         DAO DAO = new DAO();
         String playName = txtInput.getText();
         
-        DAO.addPlaylist(playName);
+        playlistModel.addPlaylist(playName);
         }
     
     public void setPlaylistModel(PlaylistModel playlistModel)

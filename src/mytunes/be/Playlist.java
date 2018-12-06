@@ -14,7 +14,7 @@ import java.util.List;
 public class Playlist
     {
     private String name;
-    private List<Song> songs;
+    public List<Song> songs;
     private String totaltime;
     private int id;
 
@@ -43,6 +43,10 @@ public class Playlist
         {
         return songs;
         }
+    public void setSongs(List<Song> songs)
+        {
+        this.songs = songs;
+        }
     // beregner tiden fra listen af sange
     public String getTotalTime()
         {
@@ -55,6 +59,6 @@ public class Playlist
     @Override
     public String toString()
         {
-        return "Playlist{" + "name=" + name + ", songs=" + songs.size() + ", time=" + getTotalTime() + '}';
+        return "Playlist{" + "name=" + name + ", songs=" + songs.size() + "time=" + getTotalTime() + '}';
         }
     }
