@@ -33,7 +33,6 @@ import java.util.logging.Logger;
  */
 public class PlaylistModel
     {
-    PlaylistModel playm = new PlaylistModel();
     ConnectionManager cM = new ConnectionManager();
     List<Playlist> pl;
     private int currentSong;

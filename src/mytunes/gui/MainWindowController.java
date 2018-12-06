@@ -183,10 +183,14 @@ public class MainWindowController implements Initializable {
 
     @FXML
     private void searchForSong(ActionEvent event) {
+        songsfelt.setItems(SongModel.getSongs());
+        SongModel.loadSongs(søgefelt.getText());
+        
     }
 
     @FXML
     private void closeMyTunes(ActionEvent event) {
+        System.exit(0);
     }
     
 }

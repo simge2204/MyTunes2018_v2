@@ -49,6 +49,15 @@ public class SongModel
         songs.clear();
         songs.addAll(loadedSongs);
     }
+    
+    public void loadSongs(String search)
+    {
+        List<Song> loadedSongs = bllManager.getAllSongs(search);
+        
+        songs.clear();
+        songs.addAll(loadedSongs);
+    }
+    
     public void addSong(String title, String artist, String genre, String time, String path) throws SQLException {
         bllManager.addSong(title, artist, genre, time, path);
     }
