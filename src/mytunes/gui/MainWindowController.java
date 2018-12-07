@@ -26,6 +26,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import MyTunes.be.Playlist;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -110,8 +112,12 @@ public class MainWindowController implements Initializable {
         songsfelt.setItems(SongModel.getSongs());
         SongModel.loadSongs();
         playlistfelt.setItems(PlaylistModel.getPlaylists());
-        PlaylistModel.loadPlaylists();
+        try {
+            PlaylistModel.loadPlaylists();
 //        playlistfelt.setItems(PlaylistModel.getAllPlaylists());
+        } catch (SQLException ex) {
+            Logger.getLogger(MainWindowController.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }    
 
@@ -124,17 +130,31 @@ public class MainWindowController implements Initializable {
         MyTunes.gui.CreatePlaylistController cpController = fxmlLoader.getController();
         cpController.setPlaylistModel(PlaylistModel);
         cpController.setMainWindowController(this);
+        cpController.setNew();
         stage.setTitle("CreatePlaylist");
         stage.setScene(new Scene(root2));
         stage.show();
         }
 
     @FXML
-    private void editPlaylist(ActionEvent event) {
+    private void editPlaylist(ActionEvent event) throws IOException, SQLException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("CreatePlaylist.fxml"));
+        Parent root2 = (Parent) fxmlLoader.load();
+        Stage stage = new Stage();
+        MyTunes.gui.CreatePlaylistController cpController=fxmlLoader.getController();
+        cpController.setPlaylistModel(PlaylistModel);
+        cpController.setMainWindowController(this);
+        cpController.setEdit();
+        Playlist selectedPlaylist = playlistfelt.getSelectionModel().getSelectedItem();
+        cpController.setPlaylist(selectedPlaylist);
+        stage.setTitle("EditPlaylist");
+        stage.setScene(new Scene(root2));
+        stage.show();
     }
 
     @FXML
     private void deletePlaylist(ActionEvent event) {
+        
     }
 
     @FXML

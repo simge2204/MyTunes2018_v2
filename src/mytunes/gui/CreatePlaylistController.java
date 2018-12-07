@@ -5,6 +5,7 @@
  */
 package MyTunes.gui;
 
+import MyTunes.be.Playlist;
 import MyTunes.be.PlaylistModel;
 import MyTunes.dal.DAO;
 import java.net.URL;
@@ -26,8 +27,11 @@ import javafx.stage.Stage;
 public class CreatePlaylistController implements Initializable
     {
 
-    MyTunes.be.PlaylistModel playlistModel;
+    MyTunes.be.PlaylistModel PlaylistModel;
     MyTunes.gui.MainWindowController mainWindowController;
+    private Playlist selectedPlaylist;
+    int type;
+    
     @FXML
     private Label PlaylistName;
     @FXML
@@ -56,18 +60,49 @@ public class CreatePlaylistController implements Initializable
     @FXML
     private void saveNewPlaylist(ActionEvent event) throws SQLException
         {
-        DAO DAO = new DAO();
         String playName = txtInput.getText();
+        Stage stage = (Stage) SavePlaylist.getScene().getWindow();
+        switch (type) {
+            case 1:
+                PlaylistModel.addPlaylist(playName);
+                break;
+            case 2:
+                selectedPlaylist.setName(playName);
+                PlaylistModel.editPlaylist(selectedPlaylist);
+                break;
+            default:
+                System.out.println("Something went wrong");
+                stage.close();
+                break;
+        }
+        }
+
+    public void setPlaylistModel(PlaylistModel PlaylistModel)
+        {
+        this.PlaylistModel = PlaylistModel;  
         
-        playlistModel.addPlaylist(playName);
         }
     
-    public void setPlaylistModel(PlaylistModel playlistModel)
-        {
-        this.playlistModel = playlistModel;
-        }
     public void setMainWindowController(MainWindowController mainWindowController) 
         {
         this.mainWindowController = mainWindowController;
+        }
+
+    public void setEdit() throws SQLException
+        {
+        //txtInput.setText(selectedPlaylist.getName());
+//        PlaylistModel.editPlaylist(selectedPlaylist);
+        type = 2;
+        }
+
+    public void setNew()
+        {
+        type = 1;
+        }
+
+    public void setPlaylist(Playlist selectedPlaylist)
+        {
+        this.selectedPlaylist = selectedPlaylist;
+        txtInput.setText(selectedPlaylist.getName());
         }
     }

@@ -49,22 +49,26 @@ public class BLLManager {
         }
     public void deletePlaylistSong(Playlist playlist)
         {
-        //DAO.deletePlaylistSong(playlist);
+        DAO.deletePlaylistSong(playlist);
         }
     
-    public void deletePlayList(Playlist pl)
+    public void updatePlaylist(Playlist playlist) throws SQLException
         {
-        //DAO.deletePlaylist(pl);
-        }
-    
-    public void updatePlaylist(Playlist playlist)
-        {
-        //DAO.updatePlaylist(playlist);
+        DAO.updatePlaylist(playlist);
         }
     
     public void createPlaylist(String name)
         {
-          //DAO.createPlaylist(name);
+          DAO.createPlaylist(name);
         }
     
+    public void editPlaylist(Playlist playlist) throws SQLException
+        {
+        DAO.editPlaylist(playlist);
+        }
+
+    public void deletePlaylist(Playlist pl)
+        {
+        DAO.deletePlayList(pl);
+        }
 }

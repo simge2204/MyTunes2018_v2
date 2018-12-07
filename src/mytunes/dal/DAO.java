@@ -61,22 +61,6 @@ public class DAO {
         }
     }    
     
-    
-    public void addPlaylist(String playName) throws SQLServerException, SQLException
-    {
-            try (Connection con = cM.getConnection()){
-            PreparedStatement stmt;
-            stmt = con.prepareStatement("INSERT INTO Playlist(Name) VALUES(?)");
-            stmt.setString(1, playName);
-            stmt.executeUpdate();
-        }
-        
-        catch (SQLException ex) {
-            Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    
     public List<Song> getAllSongs() {
         return getAllSongs("");
     
@@ -156,4 +140,122 @@ public class DAO {
        
         return playlists;
     }
+    /*
+    public List<Playlist> getAllPlaylists() throws SQLServerException, SQLException
+        {
+        List<Playlist> pllist = new ArrayList<>();
+        try (Connection con = cM.getConnection()) 
+        {
+            PreparedStatement stmt;
+            stmt = con.prepareStatement("SELECT * FROM Playlist");
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) 
+            {
+                Playlist currentPlaylist = new Playlist();
+                currentPlaylist.setName(rs.getString("name"));
+                currentPlaylist.setSongs(rs.getInt("songs"));
+                currentPlaylist.setTotalTime(rs.getString("time"));
+                pllist.add(currentPlaylist);
+            }
+        }
+            catch (SQLException ex) 
+        {
+            Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return pllist;
+        }
+    */
+    
+    //creates a new playlist with a given name
+    public void createPlaylist(String name)
+        {
+        String sql = "INSERT INTO Playlist(name) VALUES(?)";
+        try (Connection con = cM.getConnection()) {
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setString(1, name);
+            stmt.addBatch();
+            stmt .executeBatch();
+        } catch (SQLServerException ex) {
+            System.out.println(ex);
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        }
+    
+    public void addPlaylist(String playName) throws SQLServerException, SQLException
+    {
+            try (Connection con = cM.getConnection()){
+            PreparedStatement stmt;
+            stmt = con.prepareStatement("INSERT INTO Playlist(Name) VALUES(?)");
+            stmt.setString(1, playName);
+            stmt.executeUpdate();
+        }
+        
+        catch (SQLException ex) {
+            Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    //delete a song from a playlist
+    public void deletePlaylistSong(Playlist playlist)
+        {
+        try(Connection con = cM.getConnection())
+        {
+            String query = "DELETE from PlaylistModel WHERE id = ?";
+            PreparedStatement stmt = con.prepareStatement(query);
+            stmt.setInt(1, playlist.getId());
+            stmt.execute();
+        } 
+        catch (SQLException ex) 
+        {
+            Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        }
+
+    //delete a playlist
+    public void deletePlayList(Playlist pl)
+        {
+        try (Connection con = cM.getConnection())
+        {
+            String query = "DELETE from Playlist WHERE name = ?";
+            PreparedStatement stmt = con.prepareStatement(query);
+            stmt.setString(1, pl.getName());
+            stmt.execute();
+        }
+        catch (SQLException ex) 
+        {
+            Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        }
+    
+    //updates playlist
+    public void updatePlaylist(Playlist playlist) throws SQLException
+        {
+        int id = playlist.getId();
+
+        try (Connection con = cM.getConnection()) {
+            PreparedStatement stmt = con.prepareStatement(
+                    "UPDATE Playlist SET name = (?), songs= (?) WHERE id = (?)");
+            stmt.setString(1, playlist.getName());
+            stmt.setInt(2, playlist.getSongs());
+            stmt.setString(3, playlist.getTotalTime());
+            stmt.execute();
+            stmt.close();
+        }
+        catch (SQLException ex) 
+        {
+            Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        }
+        
+    public void editPlaylist(Playlist playlist) throws SQLException
+        {
+        try (Connection con = cM.getConnection()) {
+            PreparedStatement stmt = con.prepareStatement("UPDATE Playlist SET name=? WHERE id=?");
+            stmt.setInt(6, playlist.getId());
+            stmt.setString(1, playlist.getName());
+            stmt.executeUpdate();
+        }
+        }
 }

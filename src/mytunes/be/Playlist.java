@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class Playlist
     {
-    private String name;
+    private String playName;
     public int songs;
     private String totaltime;
     private int id;
@@ -25,11 +25,11 @@ public class Playlist
         }
     public String getName()
         {
-        return name;
+        return playName;
         }
-    public void setName(String name)
+    public void setName(String playName)
         {
-        this.name = name;
+        this.playName = playName;
         }
     public int getId()
         {
@@ -59,6 +59,6 @@ public class Playlist
     @Override
     public String toString()
         {
-        return "Playlist{" + "name=" + name + ", songs=" + songs + "time=" + getTotalTime() + '}';
+        return "Playlist{" + "name=" + playName + ", songs=" + songs + "time=" + getTotalTime() + '}';
         }
     }

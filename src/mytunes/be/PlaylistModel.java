@@ -45,42 +45,60 @@ public class PlaylistModel
     private MediaPlayer mediaPlayer;
     private String totaltime;
     SQLServerDataSource ds;
-
-    //file that contains song list
     
+    //file that contains song list
+    File songlist = new File("");
+//    String path = songlist.getPath();
 
-    public ObservableList<Playlist> getPlaylists() {
+    public List<Playlist> getAllPlaylists() throws SQLServerException, SQLException
+        {
+        return bllManager.getAllPlaylists();
+        }
+    
+    public ObservableList<Playlist> getPlaylists()
+    {
         return playlists;
     }
     
-    public void loadPlaylists()
+    public void loadPlaylists() throws SQLException
     {
         List<Playlist> loadedPlaylists = bllManager.getAllPlaylists();
-        
+
         playlists.clear();
         playlists.addAll(loadedPlaylists);
     }
     
     //creates a new playlist with a given name
-    public Playlist createPlayList(String name)
+    public void createPlayList(String name)
         {
-        String sql = "INSERT INTO Playlist(name) VALUES(?)";
-        try (Connection con = ds.getConnection()) {
-            PreparedStatement ps = con.prepareStatement(sql);
-            ps.setString(1, name);
-            ps.addBatch();
-            ps.executeBatch();
-        } catch (SQLServerException ex) {
-            System.out.println(ex);
-        } catch (SQLException ex) {
-            System.out.println(ex);
+        bllManager.createPlaylist(name);
         }
-        Playlist play = new Playlist();
-        return play;
+//delete a song from a playlist
+    public void deletePlaylistSong(Playlist playlist) throws SQLException
+        {
+        List<Playlist> deletePlaylistSong = bllManager.getAllPlaylists();
+        
+        playlists.remove(this);
+//        pl.getSongs().remove(song);
         }
 
+    //delete a playlist
+    public void deletePlayList(Playlist pl)
+        {
+        bllManager.deletePlaylist(pl);
+//        pl.getSongs().remove(song);
+        }
+    
+    //updates playlist
+    public void updatePlaylist(Playlist playlist) throws SQLException
+        {
+        {
+        bllManager.updatePlaylist(playlist);
+        }
+    }
+
     //add a song to a playlist
-    public void addSong(Playlist playlist, Song song)
+    /*public void addSong(Playlist playlist, Song song)
         {
         String sql = "INSERT INTO PlaylistModel(name, id, id) VALUES (?,?,?)";
         int id = -1;
@@ -98,17 +116,16 @@ public class PlaylistModel
             System.out.println(ex);
         }
         //pl.getSongs().add(song);
-        }
+        }*/
     
     public void addPlaylist(String playName) throws SQLException
         {
-        try (Connection con = cM.getConnection())
-        {
-            PreparedStatement stmt;
-            stmt = con.prepareStatement("INSERT INTO Playlist(Name) VALUES(?)");
-            stmt.setString(1, playName);
-            stmt.executeUpdate();
+        bllManager.addPlaylist(playName);
         }
+    
+    public void editPlaylist(Playlist playlist) throws SQLException
+        {
+        bllManager.editPlaylist(playlist);
         }
 
     //play a song in a playlist
@@ -148,70 +165,5 @@ public class PlaylistModel
             totaltime += song.getTime();
         }
         return totalTime;
-        }
-    
-    //delete a song from a playlist
-    public void deleteSong(Song song) throws FileNotFoundException
-        {
-        try(Connection con = ds.getConnection())
-        {
-            String query = "DELETE from PlaylistModel WHERE id = ?";
-            PreparedStatement preparedStmt = con.prepareStatement(query);
-            preparedStmt.setInt(1, song.getId());
-            preparedStmt.execute();
-        } 
-        catch (SQLServerException ex) 
-        {
-            System.out.println(ex);
-        } 
-        catch (SQLException ex) 
-        {
-            System.out.println(ex);
-        }
-//        pl.getSongs().remove(song);
-        }
-
-    //delete a playlist
-    public void deletePlayList(Playlist pl)
-        {
-        try (Connection con = ds.getConnection())
-        {
-            String query = "DELETE from Playlist WHERE name = ?";
-            PreparedStatement preparedStmt = con.prepareStatement(query);
-            preparedStmt.setString(1, pl.getName());
-            preparedStmt.execute();
-        } catch (SQLServerException ex) 
-        {
-            System.out.println(ex);
-        } catch (SQLException ex) 
-        {
-            System.out.println(ex);
-        }
-//        pl.getSongs().remove(song);
-
-        }
-    
-    //updates playlist
-    public void updatePlaylist(Playlist playlist) throws SQLException
-        {
-        int id = playlist.getId();
-
-        try (Connection con = ds.getConnection()) 
-        {
-            Statement statement = con.createStatement();
-            ResultSet rs = statement.executeQuery("Select * FROM Playlist;");
-            while (rs.next()) {
-                if (rs.getInt("id") == id) {
-                    PreparedStatement ps = con.prepareStatement(
-                            "UPDATE Playlist SET name = (?), songs= (?) WHERE id = (?)");
-                    ps.setString(1, playlist.getName());
-                    //ps.setInt(2, playlist.songs.size());
-                    ps.setString(3, playlist.getTotalTime());
-                    ps.setInt(4, id);
-                    ps.execute();
-                    ps.close();
-                }
-            }
-        }
         }
     }
