@@ -153,7 +153,19 @@ public class MainWindowController implements Initializable {
     }
 
     @FXML
-    private void deletePlaylist(ActionEvent event) {
+    private void deletePlaylist(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("DeleteSong.fxml"));
+        Parent root3 = (Parent)fxmlLoader.load();
+        Stage stage = new Stage();
+        MyTunes.gui.DeleteSongController DSController = fxmlLoader.getController();
+        DSController.setPlaylistModel(PlaylistModel);
+        DSController.setMainWindowController(this);
+        Playlist selectedPlaylist = playlistfelt.getSelectionModel().getSelectedItem();
+        DSController.setPlaylist(selectedPlaylist);
+        DSController.setPlLabel(selectedPlaylist);
+        stage.setTitle("DeletePlaylist");
+        stage.setScene(new Scene(root3));
+        stage.show();
         
     }
 

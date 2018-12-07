@@ -5,6 +5,7 @@
  */
 package MyTunes.gui;
 
+import MyTunes.be.Playlist;
 import MyTunes.be.PlaylistModel;
 import MyTunes.be.Song;
 import MyTunes.be.SongModel;
@@ -28,6 +29,9 @@ public class DeleteSongController implements Initializable
     MyTunes.be.SongModel SongModel;
     MyTunes.gui.MainWindowController mainWindowController;
     private Song selectedSong;
+    private Playlist selectedPlaylist;
+    MyTunes.be.PlaylistModel PlaylistModel;
+    
     @FXML
     private Label Tekst;
     @FXML
@@ -82,4 +86,19 @@ public class DeleteSongController implements Initializable
    {
        Tekst.setText("Are you sure you want to delete " + song.getTitle() + "?");
    }
+
+    public void setPlaylist(Playlist selectedPlaylist)
+        {
+        this.selectedPlaylist = selectedPlaylist;
+        }
+
+    public void setPlLabel(Playlist playlist)
+        {
+        Tekst.setText("Are you sure you want to delete " + playlist.getName() + "?");
+        }
+
+    void setPlaylistModel(PlaylistModel PlaylistModel)
+        {
+        this.PlaylistModel = PlaylistModel;
+        }
 }
