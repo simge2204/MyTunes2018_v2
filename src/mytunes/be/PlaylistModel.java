@@ -129,14 +129,13 @@ public class PlaylistModel
         }
 
     //play a song in a playlist
-    /*
     public void playSong(Song song)
         {
         Media hit = new Media(new File(songlist.getPath()).toURI().toString());
         mediaPlayer = new MediaPlayer(hit);
         mediaPlayer.play();
         }
-    */
+    
     //play next song in a playlist
     public void playNextSong(Song song)
         {
@@ -156,13 +155,13 @@ public class PlaylistModel
         }
     
     //total time of songs in a playlist
-    public int countTotalTime(List<Song> songs)
+    public int countTotalTime(List<Playlist> songs)
         {
         int totalTime = Integer.parseInt(totaltime);
         totalTime = 0;
-        for(Song song : songs)
+        for(Playlist song : songs)
         {
-            totaltime += song.getTime();
+            totaltime += song.getTotalTime();
         }
         return totalTime;
         }

@@ -75,6 +75,7 @@ public class CreatePlaylistController implements Initializable
                 stage.close();
                 break;
         }
+        stage.close();
         }
 
     public void setPlaylistModel(PlaylistModel PlaylistModel)
