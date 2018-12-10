@@ -5,6 +5,7 @@
  */
 package MyTunes.bll;
 import MyTunes.be.Playlist;
+import MyTunes.be.PlaylistSong;
 import java.sql.SQLException;
 import MyTunes.dal.DAO;
 import MyTunes.be.Song;
@@ -71,4 +72,9 @@ public class BLLManager {
         {
         DAO.deletePlayList(pl);
         }
+    
+    public List<PlaylistSong> getSongsOnPlaylist(Playlist selectedPlaylist)
+    {
+        return DAO.getSongsOnPlaylist(selectedPlaylist);
+    }
 }

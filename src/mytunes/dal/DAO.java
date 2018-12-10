@@ -6,6 +6,7 @@
 package MyTunes.dal;
 
 import MyTunes.be.Playlist;
+import MyTunes.be.PlaylistSong;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -255,6 +256,58 @@ public class DAO {
             PreparedStatement stmt = con.prepareStatement("UPDATE Playlist SET name=? WHERE id=?");
             stmt.setInt(6, playlist.getId());
             stmt.setString(1, playlist.getName());
+            stmt.executeUpdate();
+        }
+        }
+    
+    public List<PlaylistSong> getSongsOnPlaylist(Playlist selectedPlaylist) {
+        List<PlaylistSong> playSongs = new ArrayList();
+      
+        try (Connection con = cM.getConnection()){
+            PreparedStatement stmt;
+            stmt = con.prepareStatement("SELECT Song.id, Song.name, Song.path, Relation.playId, Relation.playOrder FROM Song INNER JOIN Relation ON Song.id = Relation.songId WHERE Relation.playId = ? ORDER BY Relation.playOrder;");
+            stmt.setInt(1, selectedPlaylist.getId());
+            ResultSet rs = stmt.executeQuery();
+            
+            while(rs.next())
+            {
+                PlaylistSong currentPlaylistSong = new PlaylistSong();
+                currentPlaylistSong.setSongId(rs.getInt("id"));
+                currentPlaylistSong.setPlayId(rs.getInt("playId"));
+                currentPlaylistSong.setTitle(rs.getString("name"));
+                currentPlaylistSong.setPlayOrder(rs.getInt("playOrder"));
+                currentPlaylistSong.setPath(rs.getString("path"));
+                playSongs.add(currentPlaylistSong);
+            }
+        } 
+        catch (SQLException ex) {
+            Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+       
+        return playSongs;
+    }
+    
+    public void moveSongUp(PlaylistSong selectedPlaySong) throws SQLException
+        {
+        try (Connection con = cM.getConnection()) {
+            PreparedStatement stmt = con.prepareStatement("UPDATE Relation SET playOrder = ? where playOrder = ?" + "UPDATE Relation SET playOrder = ? where songId = ?;");
+            stmt.setInt(1, selectedPlaySong.getPlayOrder());
+            stmt.setInt(2, selectedPlaySong.getPlayOrder()-1);
+            stmt.setInt(3, selectedPlaySong.getPlayOrder()-1);
+            stmt.setInt(4, selectedPlaySong.getSongId());
+            stmt.executeUpdate();
+        }
+        }
+    
+    public void moveSongDown(PlaylistSong selectedPlaySong) throws SQLException
+        {
+        try (Connection con = cM.getConnection()) {
+            PreparedStatement stmt = con.prepareStatement("UPDATE Relation SET playOrder = ? where playOrder = ?" + "UPDATE Relation SET playOrder = ? where songId = ?;");
+            stmt.setInt(1, selectedPlaySong.getPlayOrder());
+            stmt.setInt(2, selectedPlaySong.getPlayOrder()+1);
+            stmt.setInt(3, selectedPlaySong.getPlayOrder()+1);
+            stmt.setInt(4, selectedPlaySong.getSongId());
             stmt.executeUpdate();
         }
         }
