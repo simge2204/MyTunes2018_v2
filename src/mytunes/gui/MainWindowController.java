@@ -83,8 +83,8 @@ public class MainWindowController implements Initializable {
     private TableColumn<Song, String> genreColumn;
     @FXML
     private TableColumn<Song, String> timeColumn;
-    @FXML
-    private TableView<PlaylistSong> SongsonPlaylistfelt;
+    //@FXML
+    //private TableView<PlaylistSong> 
     @FXML
     private Button tilVentes;
     @FXML
