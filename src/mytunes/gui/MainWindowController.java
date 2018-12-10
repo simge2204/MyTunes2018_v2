@@ -26,6 +26,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import MyTunes.be.Playlist;
+import MyTunes.be.PlaylistSong;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -83,7 +84,7 @@ public class MainWindowController implements Initializable {
     @FXML
     private TableColumn<Song, String> timeColumn;
     @FXML
-    private TableColumn<?, ?> SongsonPlaylistfelt;
+    private TableView<PlaylistSong> SongsonPlaylistfelt;
     @FXML
     private Button tilVentes;
     @FXML
