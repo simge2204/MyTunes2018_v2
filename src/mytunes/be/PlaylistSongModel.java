@@ -12,6 +12,8 @@ import javafx.collections.ObservableList;
 import MyTunes.bll.BLLManager;
 import MyTunes.be.PlaylistSong;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /**
  *
  * @author kedde
@@ -32,5 +34,15 @@ public class PlaylistSongModel {
         
         playSongs.clear();
         playSongs.addAll(loadedSongs);
+    }
+    
+    public void moveSongUp(PlaylistSong selectedPlaySong) throws SQLException
+    {
+        bllManager.moveSongUp(selectedPlaySong); 
+    }
+    
+    public void moveSongDown(PlaylistSong selectedPlaySong) throws SQLException
+    {
+        bllManager.moveSongDown(selectedPlaySong); 
     }
 }

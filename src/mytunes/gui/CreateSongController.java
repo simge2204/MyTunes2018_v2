@@ -16,6 +16,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javax.swing.JFileChooser;
 
 /**
  * FXML Controller class
@@ -97,5 +98,19 @@ public class CreateSongController implements Initializable {
         GenreField.setText(selectedSong.getGenre());
         TimeField.setText(selectedSong.getTime());
         PathField.setText(selectedSong.getPath());
+    }
+    
+    @FXML
+    private void clickbtnChoose(ActionEvent event) {
+        JFileChooser c = new JFileChooser();
+            c.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+            int rVal = c.showSaveDialog(c);
+            if (rVal == JFileChooser.APPROVE_OPTION) {
+                PathField.setText("");
+                PathField.setText(c.getSelectedFile().toString());
+            }
+            if (rVal == JFileChooser.CANCEL_OPTION) {
+                PathField.setText("");
+            }
     }
 }

@@ -18,7 +18,7 @@
       <TextField fx:id="TitleField" layoutX="121.0" layoutY="29.0" prefHeight="25.0" prefWidth="179.0" />
       <TextField fx:id="ArtistField" layoutX="121.0" layoutY="77.0" prefHeight="25.0" prefWidth="179.0" />
       <TextField fx:id="PathField" layoutX="121.0" layoutY="202.0" prefHeight="25.0" prefWidth="146.0" />
-      <Button layoutX="274.0" layoutY="202.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="28.0" text="..." />
+      <Button layoutX="274.0" layoutY="202.0" mnemonicParsing="false" onAction="#clickbtnChoose" prefHeight="25.0" prefWidth="28.0" text="..." />
       <Label layoutX="34.0" layoutY="32.0" prefHeight="17.0" prefWidth="88.0" text="Title">
          <font>
             <Font size="17.0" />

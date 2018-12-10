@@ -219,9 +219,9 @@ public class DAO {
         {
         try (Connection con = cM.getConnection())
         {
-            String query = "DELETE from Playlist WHERE name = ?";
+            String query = "DELETE from Playlist WHERE id = ?";
             PreparedStatement stmt = con.prepareStatement(query);
-            stmt.setString(1, pl.getName());
+            stmt.setInt(1, pl.getId());
             stmt.execute();
         }
         catch (SQLException ex) 
@@ -233,14 +233,12 @@ public class DAO {
     //updates playlist
     public void updatePlaylist(Playlist playlist) throws SQLException
         {
-        int id = playlist.getId();
-
+        
         try (Connection con = cM.getConnection()) {
             PreparedStatement stmt = con.prepareStatement(
-                    "UPDATE Playlist SET name = (?), songs= (?) WHERE id = (?)");
+                    "UPDATE Playlist SET name = ? WHERE id = ?");
             stmt.setString(1, playlist.getName());
-            stmt.setInt(2, playlist.getSongs());
-            stmt.setString(3, playlist.getTotalTime());
+            stmt.setInt(3, playlist.getId());
             stmt.execute();
             stmt.close();
         }
@@ -254,7 +252,7 @@ public class DAO {
         {
         try (Connection con = cM.getConnection()) {
             PreparedStatement stmt = con.prepareStatement("UPDATE Playlist SET name=? WHERE id=?");
-            stmt.setInt(6, playlist.getId());
+            stmt.setInt(2, playlist.getId());
             stmt.setString(1, playlist.getName());
             stmt.executeUpdate();
         }
@@ -291,7 +289,7 @@ public class DAO {
     public void moveSongUp(PlaylistSong selectedPlaySong) throws SQLException
         {
         try (Connection con = cM.getConnection()) {
-            PreparedStatement stmt = con.prepareStatement("UPDATE Relation SET playOrder = ? where playOrder = ?" + "UPDATE Relation SET playOrder = ? where songId = ?;");
+            PreparedStatement stmt = con.prepareStatement("UPDATE Relation SET playOrder = ? where playOrder = ?;" + "UPDATE Relation SET playOrder = ? WHERE songId = ?;");
             stmt.setInt(1, selectedPlaySong.getPlayOrder());
             stmt.setInt(2, selectedPlaySong.getPlayOrder()-1);
             stmt.setInt(3, selectedPlaySong.getPlayOrder()-1);
@@ -303,7 +301,7 @@ public class DAO {
     public void moveSongDown(PlaylistSong selectedPlaySong) throws SQLException
         {
         try (Connection con = cM.getConnection()) {
-            PreparedStatement stmt = con.prepareStatement("UPDATE Relation SET playOrder = ? where playOrder = ?" + "UPDATE Relation SET playOrder = ? where songId = ?;");
+            PreparedStatement stmt = con.prepareStatement("UPDATE Relation SET playOrder = ? where playOrder = ?;" + "UPDATE Relation SET playOrder = ? where songId = ?;");
             stmt.setInt(1, selectedPlaySong.getPlayOrder());
             stmt.setInt(2, selectedPlaySong.getPlayOrder()+1);
             stmt.setInt(3, selectedPlaySong.getPlayOrder()+1);
@@ -311,4 +309,20 @@ public class DAO {
             stmt.executeUpdate();
         }
         }
+    
+    public void addSongToPlaylist(Song selectedSong, Playlist selectedPlaylist, int playOrder) throws SQLServerException, SQLException
+    {
+            try (Connection con = cM.getConnection()){
+            PreparedStatement stmt;
+            stmt = con.prepareStatement("INSERT INTO Relation(songId, playId, playOrder) VALUES(?,?,?)");
+            stmt.setInt(1, selectedSong.getId());
+            stmt.setInt(2, selectedPlaylist.getId());
+            stmt.setInt(3, playOrder);
+            stmt.executeUpdate();
+        }
+        
+        catch (SQLException ex) {
+            Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

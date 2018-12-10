@@ -29,6 +29,7 @@ import MyTunes.be.Playlist;
 import MyTunes.be.PlaylistSong;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.scene.input.MouseEvent;
 
 /**
  *
@@ -39,6 +40,7 @@ public class MainWindowController implements Initializable {
     MyTunes.bll.BLLManager BLL = new MyTunes.bll.BLLManager();
     MyTunes.be.SongModel SongModel = new MyTunes.be.SongModel();
     MyTunes.be.PlaylistModel PlaylistModel = new MyTunes.be.PlaylistModel();
+    MyTunes.be.PlaylistSongModel PlaylistSongModel = new MyTunes.be.PlaylistSongModel();
     @FXML
     private Label label;
     @FXML
@@ -83,8 +85,12 @@ public class MainWindowController implements Initializable {
     private TableColumn<Song, String> genreColumn;
     @FXML
     private TableColumn<Song, String> timeColumn;
-    //@FXML
-    //private TableView<PlaylistSong> 
+    @FXML
+    private TableView<PlaylistSong> PlaylistSongsFelt;
+    @FXML
+    private TableColumn<PlaylistSong, String> playlistSongs;
+    @FXML
+    private TableColumn<PlaylistSong, String> PlayOrder;
     @FXML
     private Button tilVentes;
     @FXML
@@ -110,6 +116,8 @@ public class MainWindowController implements Initializable {
         name.setCellValueFactory(new PropertyValueFactory("name"));
         songs.setCellValueFactory(new PropertyValueFactory("songs"));
         playTime.setCellValueFactory(new PropertyValueFactory("time"));
+        PlayOrder.setCellValueFactory(new PropertyValueFactory("playOrder"));
+        playlistSongs.setCellValueFactory(new PropertyValueFactory("title"));
         songsfelt.setItems(SongModel.getSongs());
         SongModel.loadSongs();
         playlistfelt.setItems(PlaylistModel.getPlaylists());
@@ -171,11 +179,17 @@ public class MainWindowController implements Initializable {
     }
 
     @FXML
-    private void playlistSongUp(ActionEvent event) {
+    private void playlistSongUp(ActionEvent event) throws SQLException {
+        PlaylistSong selectedPlaySong = PlaylistSongsFelt.getSelectionModel().getSelectedItem();
+        PlaylistSongModel.moveSongUp(selectedPlaySong);
+        reload();
     }
 
     @FXML
-    private void playlistSongDown(ActionEvent event) {
+    private void playlistSongDown(ActionEvent event) throws SQLException {
+        PlaylistSong selectedPlaySong = PlaylistSongsFelt.getSelectionModel().getSelectedItem();
+        PlaylistSongModel.moveSongDown(selectedPlaySong);
+        reload();
     }
 
     @FXML
@@ -255,8 +269,26 @@ public class MainWindowController implements Initializable {
     }
     
     public void reload() {
+        Playlist selectedPlaylist = playlistfelt.getSelectionModel().getSelectedItem();
         songsfelt.setItems(SongModel.getSongs());
         SongModel.loadSongs();
+        if(selectedPlaylist!=null)
+        {
+            PlaylistSongsFelt.setItems(PlaylistSongModel.getPlaySongs());
+            PlaylistSongModel.loadPlaySongs(selectedPlaylist);
+        }
     }
+    
+    @FXML public void clickPlaylist(MouseEvent click)
+            //is used to quickly reload whenever needed. (Happens on Playlists)
+        {
+            if(click.getClickCount()==2)
+            {
+                Playlist selectedPlaylist = playlistfelt.getSelectionModel().getSelectedItem();
+                PlaylistSongsFelt.setItems(PlaylistSongModel.getPlaySongs());
+                PlaylistSongModel.loadPlaySongs(selectedPlaylist);
+                
+            }
+         }
     
 }

@@ -74,7 +74,17 @@ public class BLLManager {
         }
     
     public List<PlaylistSong> getSongsOnPlaylist(Playlist selectedPlaylist)
-    {
+        {
         return DAO.getSongsOnPlaylist(selectedPlaylist);
-    }
+        }
+    
+    public void moveSongUp(PlaylistSong selectedPlaySong) throws SQLException
+        {
+        DAO.moveSongUp(selectedPlaySong);
+        }
+    
+    public void moveSongDown(PlaylistSong selectedPlaySong) throws SQLException
+        {
+        DAO.moveSongDown(selectedPlaySong);
+        }
 }
