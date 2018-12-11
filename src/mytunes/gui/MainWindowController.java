@@ -30,6 +30,11 @@ import MyTunes.be.PlaylistSong;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.scene.input.MouseEvent;
+import java.io.File;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer; 
 
 /**
  *
@@ -41,6 +46,10 @@ public class MainWindowController implements Initializable {
     MyTunes.be.SongModel SongModel = new MyTunes.be.SongModel();
     MyTunes.be.PlaylistModel PlaylistModel = new MyTunes.be.PlaylistModel();
     MyTunes.be.PlaylistSongModel PlaylistSongModel = new MyTunes.be.PlaylistSongModel();
+    private MediaPlayer mediaPlayer;
+    File songlist = new File("");
+    private boolean isPlaying;
+    private int currentSong;
     @FXML
     private Label label;
     @FXML
@@ -249,11 +258,28 @@ public class MainWindowController implements Initializable {
     }
 
     @FXML
-    private void playPauseSong(ActionEvent event) {
+    private void playPauseSong(ActionEvent event) 
+    {
+        if(!isPlaying)
+        {
+        MP3Player.play();
+        }
+        if(isPlaying)
+        {
+        MP3Player.stop();
+        }
     }
 
     @FXML
-    private void nextSong(ActionEvent event) {
+    private void nextSong(ActionEvent event) 
+    {
+        if (!isPlaying) {
+            currentSong = 0;
+        }
+        if (isPlaying) {
+            currentSong++;
+        }
+        mediaPlayer.play();
     }
 
     @FXML
