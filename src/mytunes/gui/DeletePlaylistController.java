@@ -8,6 +8,7 @@ package MyTunes.gui;
 import MyTunes.be.Playlist;
 import MyTunes.be.PlaylistModel;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -44,10 +45,11 @@ public class DeletePlaylistController implements Initializable
         }    
 
     @FXML
-    private void pressJa(ActionEvent event)
+    private void pressJa(ActionEvent event) throws SQLException
         {
         PlaylistModel.deletePlayList(selectedPlaylist);
         Stage stage = (Stage) Ja.getScene().getWindow();
+        mainWindowController.reload();
         stage.close();
         }
 

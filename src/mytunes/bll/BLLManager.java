@@ -87,4 +87,14 @@ public class BLLManager {
         {
         DAO.moveSongDown(selectedPlaySong);
         }
+    
+    public void addSongToPlaylist(Song selectedSong, Playlist selectedPlaylist) throws SQLException 
+    {
+        DAO.addSongToPlaylist(selectedSong, selectedPlaylist);
+    }
+    
+    public void deletePlaylistSong(PlaylistSong selectedPlaySong, Playlist selectedPlaylist) throws SQLException 
+    {
+        DAO.deletePlaylistSong(selectedPlaySong, selectedPlaylist);
+    }
 }

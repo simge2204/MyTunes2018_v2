@@ -45,4 +45,14 @@ public class PlaylistSongModel {
     {
         bllManager.moveSongDown(selectedPlaySong); 
     }
+    
+    public void addSongToPlaylist(Song selectedSong, Playlist selectedPlaylist) throws SQLException 
+    {
+        bllManager.addSongToPlaylist(selectedSong, selectedPlaylist);
+    }
+    
+    public void deletePlaylistSong(PlaylistSong selectedPlaySong, Playlist selectedPlaylist) throws SQLException 
+    {
+        bllManager.deletePlaylistSong(selectedPlaySong, selectedPlaylist);
+    }
 }

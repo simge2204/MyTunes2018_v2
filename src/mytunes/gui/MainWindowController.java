@@ -112,11 +112,13 @@ public class MainWindowController implements Initializable {
     private Button SongsClose;
     
     @FXML
-    private void handleButtonAction(ActionEvent event)
-        {
-        PlaylistModel model = new PlaylistModel();
-//        model.createPlayList("happy");
-        }
+    private void handleButtonAction(ActionEvent event) throws SQLException
+    {
+        Song selectedSong = songsfelt.getSelectionModel().getSelectedItem();
+        Playlist selectedPlaylist = playlistfelt.getSelectionModel().getSelectedItem();
+        PlaylistSongModel.addSongToPlaylist(selectedSong, selectedPlaylist);
+        reload();
+    }
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -252,7 +254,12 @@ public class MainWindowController implements Initializable {
     }
 
     @FXML
-    private void deleteFromPlaylist(ActionEvent event) {
+    private void deleteFromPlaylist(ActionEvent event) throws SQLException {
+        PlaylistSong selectedPlaySong = PlaylistSongsFelt.getSelectionModel().getSelectedItem();
+        Playlist selectedPlaylist = playlistfelt.getSelectionModel().getSelectedItem();
+        PlaylistSongModel.deletePlaylistSong(selectedPlaySong, selectedPlaylist);
+        
+        reload();
     }
 
     @FXML
@@ -285,9 +292,8 @@ public class MainWindowController implements Initializable {
     }
 
     @FXML
-    private void searchForSong(ActionEvent event) {
-        songsfelt.setItems(SongModel.getSongs());
-        SongModel.loadSongs(søgefelt.getText());
+    private void searchForSong(ActionEvent event) throws SQLException {
+        reload();
         
     }
 
@@ -296,15 +302,17 @@ public class MainWindowController implements Initializable {
         System.exit(0);
     }
     
-    public void reload() {
+    public void reload() throws SQLException {
         Playlist selectedPlaylist = playlistfelt.getSelectionModel().getSelectedItem();
         songsfelt.setItems(SongModel.getSongs());
-        SongModel.loadSongs();
+        SongModel.loadSongs(søgefelt.getText());
         if(selectedPlaylist!=null)
         {
             PlaylistSongsFelt.setItems(PlaylistSongModel.getPlaySongs());
             PlaylistSongModel.loadPlaySongs(selectedPlaylist);
         }
+        PlaylistModel.loadPlaylists();
+        playlistfelt.getSelectionModel().select(selectedPlaylist);
     }
     
     @FXML public void clickPlaylist(MouseEvent click)
