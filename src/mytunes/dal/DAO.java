@@ -292,7 +292,7 @@ public class DAO {
     {
             try (Connection con = cM.getConnection()){
             PreparedStatement stmt;
-            stmt = con.prepareStatement("INSERT INTO Relation(songId, playId, playOrder) VALUES(?,?,?)" + "UPDATE Playlist SET songs = ? WHERE id = ?");
+            stmt = con.prepareStatement("INSERT INTO Relation(songId, playId, playOrder) VALUES(?,?,?);" + "UPDATE Playlist SET songs = ? WHERE id = ?");
             stmt.setInt(1, selectedSong.getId());
             stmt.setInt(2, selectedPlaylist.getId());
             stmt.setInt(3, selectedPlaylist.getSongs()+1);
@@ -306,16 +306,15 @@ public class DAO {
         }
     }
     
-    public void deletePlaylistSong(PlaylistSong selectedPlaySong, Playlist selectedPlaylist) throws SQLServerException, SQLException
+    public void deletePlaylistSong(PlaylistSong selectedPlaySong) throws SQLServerException, SQLException
     {
             try (Connection con = cM.getConnection()){
             PreparedStatement stmt;
-            stmt = con.prepareStatement("DELETE FROM Relation WHERE playId = ? AND songId = ? AND playOrder = ?;" + "Update Playlist Songs = ? WHERE id = ?");
+            stmt = con.prepareStatement("DELETE FROM Relation WHERE playId = ? AND songId = ? AND playOrder = ?;" + "UPDATE Playlist SET songs = songs-1 WHERE id = ?;");
             stmt.setInt(1, selectedPlaySong.getPlayId());
             stmt.setInt(2, selectedPlaySong.getSongId());
             stmt.setInt(3, selectedPlaySong.getPlayOrder());
-            stmt.setInt(4, selectedPlaylist.getSongs()-1);
-            stmt.setInt(5, selectedPlaylist.getId());
+            stmt. setInt(4, selectedPlaySong.getPlayId());
             stmt.executeUpdate();
         }
         
@@ -324,15 +323,14 @@ public class DAO {
         }
     }
     
-    public void updatePlayOrder(PlaylistSong selectedPlaySong, Playlist selectedPlaylist, int i) throws SQLServerException, SQLException
+    public void updatePlayOrder(PlaylistSong selectedPlaySong, int i) throws SQLServerException, SQLException
     {
             try (Connection con = cM.getConnection()){
             PreparedStatement stmt;
-            stmt = con.prepareStatement("UPDATE Relation SET playOrder = ? WHERE playId = ? AND songId = ? AND playOrder = ?;");
+            stmt = con.prepareStatement("UPDATE Relation SET playOrder = ? WHERE playId = ? AND playOrder = ?;");
             stmt.setInt(1, i-1);
             stmt.setInt(2, selectedPlaySong.getPlayId());
-            stmt.setInt(3, selectedPlaySong.getSongId());
-            stmt.setInt(4, selectedPlaySong.getPlayOrder());
+            stmt.setInt(3, i);
             stmt.executeUpdate();
         }
         

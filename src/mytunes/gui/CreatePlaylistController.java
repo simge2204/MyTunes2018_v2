@@ -75,6 +75,7 @@ public class CreatePlaylistController implements Initializable
                 stage.close();
                 break;
         }
+            mainWindowController.reload();
         stage.close();
         }
 

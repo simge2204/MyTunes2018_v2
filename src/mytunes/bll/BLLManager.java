@@ -93,8 +93,13 @@ public class BLLManager {
         DAO.addSongToPlaylist(selectedSong, selectedPlaylist);
     }
     
-    public void deletePlaylistSong(PlaylistSong selectedPlaySong, Playlist selectedPlaylist) throws SQLException 
+    public void deletePlaylistSong(PlaylistSong selectedPlaySong) throws SQLException 
     {
-        DAO.deletePlaylistSong(selectedPlaySong, selectedPlaylist);
+        DAO.deletePlaylistSong(selectedPlaySong);
+    }
+    
+    public void updatePlayOrder(PlaylistSong selectedPlaySong, int i) throws SQLException
+    {
+        DAO.updatePlayOrder(selectedPlaySong, i);
     }
 }

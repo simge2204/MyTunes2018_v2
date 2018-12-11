@@ -48,6 +48,9 @@ public class MainWindowController implements Initializable {
     MyTunes.be.PlaylistModel PlaylistModel = new MyTunes.be.PlaylistModel();
     MyTunes.be.PlaylistSongModel PlaylistSongModel = new MyTunes.be.PlaylistSongModel();
     MyTunes.be.MP3Player MP3Player = new MyTunes.be.MP3Player(); 
+    private Song selectedSong;
+    private Playlist selectedPlaylist;
+    private PlaylistSong selectedPlaySong;
     private MediaPlayer mediaPlayer;
     File songlist = new File("");
     private boolean isPlaying;
@@ -114,9 +117,10 @@ public class MainWindowController implements Initializable {
     @FXML
     private void handleButtonAction(ActionEvent event) throws SQLException
     {
-        Song selectedSong = songsfelt.getSelectionModel().getSelectedItem();
-        Playlist selectedPlaylist = playlistfelt.getSelectionModel().getSelectedItem();
+        selectedSong = songsfelt.getSelectionModel().getSelectedItem();
+        selectedPlaylist = playlistfelt.getSelectionModel().getSelectedItem();
         PlaylistSongModel.addSongToPlaylist(selectedSong, selectedPlaylist);
+        selectedPlaylist.setSongs(selectedPlaylist.getSongs()+1);
         reload();
     }
     
@@ -167,7 +171,7 @@ public class MainWindowController implements Initializable {
         cpController.setPlaylistModel(PlaylistModel);
         cpController.setMainWindowController(this);
         cpController.setEdit();
-        Playlist selectedPlaylist = playlistfelt.getSelectionModel().getSelectedItem();
+        selectedPlaylist = playlistfelt.getSelectionModel().getSelectedItem();
         cpController.setPlaylist(selectedPlaylist);
         stage.setTitle("EditPlaylist");
         stage.setScene(new Scene(root2));
@@ -182,7 +186,7 @@ public class MainWindowController implements Initializable {
         MyTunes.gui.DeletePlaylistController DPController = fxmlLoader.getController();
         DPController.setPlaylistModel(PlaylistModel);
         DPController.setMainWindowController(this);
-        Playlist selectedPlaylist = playlistfelt.getSelectionModel().getSelectedItem();
+        selectedPlaylist = playlistfelt.getSelectionModel().getSelectedItem();
         DPController.setPlaylist(selectedPlaylist);
         DPController.setPlLabel(selectedPlaylist);
         stage.setTitle("DeletePlaylist");
@@ -193,14 +197,14 @@ public class MainWindowController implements Initializable {
 
     @FXML
     private void playlistSongUp(ActionEvent event) throws SQLException {
-        PlaylistSong selectedPlaySong = PlaylistSongsFelt.getSelectionModel().getSelectedItem();
+        selectedPlaySong = PlaylistSongsFelt.getSelectionModel().getSelectedItem();
         PlaylistSongModel.moveSongUp(selectedPlaySong);
         reload();
     }
 
     @FXML
     private void playlistSongDown(ActionEvent event) throws SQLException {
-        PlaylistSong selectedPlaySong = PlaylistSongsFelt.getSelectionModel().getSelectedItem();
+        selectedPlaySong = PlaylistSongsFelt.getSelectionModel().getSelectedItem();
         PlaylistSongModel.moveSongDown(selectedPlaySong);
         reload();
     }
@@ -214,7 +218,7 @@ public class MainWindowController implements Initializable {
         MyTunes.gui.DeleteSongController DSController = fxmlLoader.getController();
         DSController.setSongModel(SongModel);
         DSController.setMainWindowController(this);
-        Song selectedSong = songsfelt.getSelectionModel().getSelectedItem();
+        selectedSong = songsfelt.getSelectionModel().getSelectedItem();
         DSController.setSong(selectedSong);
         DSController.setLabel(selectedSong);
         stage.setTitle("DeleteSong");
@@ -231,7 +235,7 @@ public class MainWindowController implements Initializable {
         apwController.setSongModel(SongModel);
         apwController.setMainWindowController(this);
         apwController.setEdit();
-        Song selectedSong = songsfelt.getSelectionModel().getSelectedItem();
+        selectedSong = songsfelt.getSelectionModel().getSelectedItem();
         apwController.setSong(selectedSong);
         stage.setTitle("CreateSong");
         stage.setScene(new Scene(root1));
@@ -255,10 +259,13 @@ public class MainWindowController implements Initializable {
 
     @FXML
     private void deleteFromPlaylist(ActionEvent event) throws SQLException {
-        PlaylistSong selectedPlaySong = PlaylistSongsFelt.getSelectionModel().getSelectedItem();
-        Playlist selectedPlaylist = playlistfelt.getSelectionModel().getSelectedItem();
-        PlaylistSongModel.deletePlaylistSong(selectedPlaySong, selectedPlaylist);
-        
+        selectedPlaySong = PlaylistSongsFelt.getSelectionModel().getSelectedItem();
+        selectedPlaylist = playlistfelt.getSelectionModel().getSelectedItem();
+        PlaylistSongModel.deletePlaylistSong(selectedPlaySong);
+        for (int i = selectedPlaySong.getPlayOrder()+1; i < selectedPlaylist.getSongs()+3; i++) {
+            PlaylistSongModel.updatePlayOrder(selectedPlaySong, i);
+        }
+        selectedPlaylist.setSongs(selectedPlaylist.getSongs()-1);
         reload();
     }
 
@@ -303,7 +310,7 @@ public class MainWindowController implements Initializable {
     }
     
     public void reload() throws SQLException {
-        Playlist selectedPlaylist = playlistfelt.getSelectionModel().getSelectedItem();
+        selectedPlaylist = playlistfelt.getSelectionModel().getSelectedItem();
         songsfelt.setItems(SongModel.getSongs());
         SongModel.loadSongs(søgefelt.getText());
         if(selectedPlaylist!=null)
@@ -311,6 +318,7 @@ public class MainWindowController implements Initializable {
             PlaylistSongsFelt.setItems(PlaylistSongModel.getPlaySongs());
             PlaylistSongModel.loadPlaySongs(selectedPlaylist);
         }
+        playlistfelt.setItems(PlaylistModel.getPlaylists());
         PlaylistModel.loadPlaylists();
         playlistfelt.getSelectionModel().select(selectedPlaylist);
     }
@@ -320,7 +328,7 @@ public class MainWindowController implements Initializable {
         {
             if(click.getClickCount()==2)
             {
-                Playlist selectedPlaylist = playlistfelt.getSelectionModel().getSelectedItem();
+                selectedPlaylist = playlistfelt.getSelectionModel().getSelectedItem();
                 PlaylistSongsFelt.setItems(PlaylistSongModel.getPlaySongs());
                 PlaylistSongModel.loadPlaySongs(selectedPlaylist);
                 
