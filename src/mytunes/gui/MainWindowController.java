@@ -52,8 +52,8 @@ public class MainWindowController implements Initializable {
     private Playlist selectedPlaylist;
     private PlaylistSong selectedPlaySong;
     private MediaPlayer mediaPlayer;
-    File songlist = new File("");
-    private boolean isPlaying;
+    File songlist = new File("C:\\Users\\maxim\\Desktop\\music");
+    private boolean isPlaying = false;
     private int currentSong;
     @FXML
     private Label label;
@@ -278,6 +278,8 @@ public class MainWindowController implements Initializable {
     {
         if(!isPlaying)
         {
+        selectedPlaySong = PlaylistSongsFelt.getSelectionModel().getSelectedItem();
+        MP3Player.updatePlayerList(PlaylistSongsFelt.getItems());
         MP3Player.play();
         }
         if(isPlaying)

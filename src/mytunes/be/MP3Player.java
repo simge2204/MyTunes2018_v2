@@ -4,12 +4,8 @@
  * and open the template in the editor.
  */
 package MyTunes.be;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.LinkedList;
-import java.util.Queue;
+import java.util.List;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
@@ -19,24 +15,17 @@ import javafx.scene.media.MediaPlayer;
  */
 public class MP3Player 
 {
-    private Queue<Path> music = new LinkedList<>();
+    int countSong = 0;
+    private List<PlaylistSong> music = new LinkedList<>();
    
     private MediaPlayer mediaPlayer;
-   
-    /**
-     *
-     * @throws java.io.IOException
-     */
-    public void start() throws IOException
+    
+    public void updatePlayerList(List<PlaylistSong> songlist)
     {
-        Files.find(Paths.get(System.getProperty("user.home"), "C:/Users/maxim/Desktop/music/Steampianist - Rust - Feat. Sonata/"), 100,
-                (p, a) -> p.toString().toLowerCase().endsWith(".m4a"))
-                .forEach(music::add);
-        
-        play();
-                
+        music = songlist;
+        countSong = 0;
     }
-            
+                  
     public void stop()
     {
         if (mediaPlayer != null)
@@ -47,16 +36,17 @@ public class MP3Player
     }       
     public void play()
     {
-        if(music.peek() == null)
+        if(music.isEmpty() || countSong > music.size())
         {
             return;
         }
-        mediaPlayer = new MediaPlayer(new Media(music.poll().toUri().toString()));
+        mediaPlayer = new MediaPlayer(new Media(music.get(countSong).getPath()));
         mediaPlayer.setOnReady(() ->
         {
             mediaPlayer.play();
             mediaPlayer.setOnEndOfMedia(() ->
             {
+                countSong ++;
                 mediaPlayer.dispose();
                 play();
             });
