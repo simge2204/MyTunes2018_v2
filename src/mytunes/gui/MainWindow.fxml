@@ -8,7 +8,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="584.0" prefWidth="881.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MyTunes.gui.MainWindowController">
+<AnchorPane id="AnchorPane" prefHeight="584.0" prefWidth="881.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MyTunes.gui.MainWindowController">
     <children>
         <Button fx:id="PlaylistsNew" layoutX="14.0" layoutY="542.0" onAction="#newPlaylist" text="New" />
         <Label fx:id="label" layoutX="126" layoutY="120" minHeight="16" minWidth="69" />
@@ -20,11 +20,11 @@
       <Button fx:id="SongsEdit" layoutX="684.0" layoutY="544.0" onAction="#editSong" text="Edit" />
       <Button fx:id="SongsNew" layoutX="633.0" layoutY="544.0" onAction="#newSong" text="New" />
       <Button fx:id="SongsonPlaylistDelete" layoutX="408.0" layoutY="544.0" onAction="#deleteFromPlaylist" text="Delete" />
-      <Button fx:id="tilbage" layoutX="14.0" layoutY="14.0" onAction="#prevSong" text="Tilbage" />
-      <Button fx:id="spil" layoutX="78.0" layoutY="14.0" onAction="#playPauseSong" text="Spil" />
-      <Button fx:id="næste" layoutX="123.0" layoutY="14.0" onAction="#nextSong" text="Næste" />
-      <Slider layoutX="15.0" layoutY="47.0" />
-      <Label layoutX="335.0" layoutY="38.0" prefHeight="18.0" prefWidth="108.0" />
+      <Button fx:id="tilbage" layoutX="64.0" layoutY="47.0" onAction="#prevSong" text="Tilbage" />
+      <Button fx:id="spil" layoutX="128.0" layoutY="47.0" onAction="#playPauseSong" text="Spil" />
+      <Button fx:id="næste" layoutX="173.0" layoutY="47.0" onAction="#nextSong" text="Næste" />
+      <Slider fx:id="Volume" layoutX="65.0" layoutY="80.0" onDragDetected="#VolumeUpandDown" />
+      <Label fx:id="nuværderSang" layoutX="279.0" layoutY="36.0" prefHeight="46.0" prefWidth="220.0" />
       <TableView fx:id="playlistfelt" layoutX="14.0" layoutY="103.0" onMouseClicked="#clickPlaylist" prefHeight="435.0" prefWidth="275.0">
         <columns>
           <TableColumn fx:id="name" prefWidth="88.80001640319824" text="Name" />
@@ -52,5 +52,7 @@
             <TableColumn fx:id="playlistSongs" prefWidth="130.0" text="Songs on Playlist" />
         </columns>
       </TableView>
+      <Button fx:id="Pause" layoutX="66.0" layoutY="14.0" mnemonicParsing="false" onAction="#Pause" text="Pause" />
+      <Button fx:id="Stop" layoutX="170.0" layoutY="14.0" mnemonicParsing="false" onAction="#Stop" text="Stop" />
     </children>
 </AnchorPane>

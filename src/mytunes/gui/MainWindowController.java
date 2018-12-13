@@ -32,8 +32,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.scene.input.MouseEvent;
 import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
+import javafx.beans.binding.StringBinding;
+import javafx.scene.control.Slider;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer; 
 
@@ -51,10 +58,11 @@ public class MainWindowController implements Initializable {
     private Song selectedSong;
     private Playlist selectedPlaylist;
     private PlaylistSong selectedPlaySong;
-    private MediaPlayer mediaPlayer;
-    File songlist = new File("C:\\Users\\maxim\\Desktop\\music");
+    MediaPlayer mediaPlayer = null;
+    String songPath = "C:\\Users\\maxim\\Desktop\\music\\Steampianist - Rust - Feat. Sonata.mp3";
     private boolean isPlaying = false;
     private int currentSong;
+
     @FXML
     private Label label;
     @FXML
@@ -113,6 +121,14 @@ public class MainWindowController implements Initializable {
     private TextField søgefelt;
     @FXML
     private Button SongsClose;
+    @FXML
+    private Button Pause;
+    @FXML
+    private Button Stop;
+    @FXML
+    private Label nuværderSang;
+    @FXML
+    private Slider Volume;
     
     @FXML
     private void handleButtonAction(ActionEvent event) throws SQLException
@@ -270,36 +286,133 @@ public class MainWindowController implements Initializable {
     }
 
     @FXML
-    private void prevSong(ActionEvent event) {
+    private void prevSong(ActionEvent event) throws URISyntaxException 
+    {
+        mediaPlayer.getOnEndOfMedia();
+        songsfelt.getSelectionModel().getSelectedItem();
+        PlaylistSongsFelt.getSelectionModel().getSelectedItem();
+        
+        if(songsfelt.getSelectionModel().getSelectedItem() == null) 
+        {
+        PlaylistSongsFelt.getSelectionModel().selectPrevious();
+        PlaylistSongSelect(); 
+        }
+        else if(songsfelt.getSelectionModel().getSelectedItem() != null) 
+        {
+        songsfelt.getSelectionModel().selectPrevious();
+        SongSelect(); 
+        }    
+            mediaPlayer.stop();
+            URI songURI = new URI(songPath);
+            playSong(songURI);
     }
 
     @FXML
-    private void playPauseSong(ActionEvent event) 
+    private void playPauseSong(ActionEvent event) throws URISyntaxException 
     {
-        if(!isPlaying)
-        {
-        selectedPlaySong = PlaylistSongsFelt.getSelectionModel().getSelectedItem();
-        MP3Player.updatePlayerList(PlaylistSongsFelt.getItems());
-        MP3Player.play();
-        }
-        if(isPlaying)
-        {
-        MP3Player.stop();
-        }
+         if (mediaPlayer.getStatus() == MediaPlayer.Status.PAUSED)
+        { mediaPlayer.play(); }
+        else
+        { 
+            mediaPlayer.stop(); 
+            URI songURI = new URI(songPath);
+            playSong(songURI);
+            mediaPlayer.setOnEndOfMedia(new Runnable() 
+            {
+                @Override
+                public void run() 
+                {
+                    try 
+                    {
+                        getNextSong();
+                    } catch (URISyntaxException ex) 
+                    {
+                        Logger.getLogger(MainWindowController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            });
+        }  
+//        if(!isPlaying)
+//        {
+//        selectedPlaySong = PlaylistSongsFelt.getSelectionModel().getSelectedItem();
+//        MP3Player.updatePlayerList(PlaylistSongsFelt.getItems());
+//        MP3Player.play();
+//        }
+//        if(isPlaying)
+//        {
+//        MP3Player.stop();
+//        }
     }
-
+    public void playSong(URI songURI) {
+        //This method starts running the current song, and also gives the Label a name to put on the window.//
+            mediaPlayer = new MediaPlayer(new Media(songURI.toString()));
+            songsfelt.getSelectionModel().getSelectedItem();
+//            if(songsfelt.getSelectionModel().getSelectedItem() == null) {
+//            nuværderSang.setText(PlaylistSongsFelt.getSelectionModel().getSelectedItem().getName());}
+//            else {
+//            nuværderSang.setText(songsfelt.getSelectionModel().getSelectedItem().getName()); }
+//            bindPlayerToGUI();
+            mediaPlayer.play();
+        } 
+private void bindPlayerToGUI() 
+    {
+        label.textProperty().bind(
+            new StringBinding()
+            {
+               
+                { 
+                    super.bind(mediaPlayer.currentTimeProperty());
+                }
+                @Override
+                protected String computeValue()
+                {   
+                    String form = String.format("%d min, %d sec", 
+                        TimeUnit.MILLISECONDS.toMinutes((long)mediaPlayer.getCurrentTime().toMillis()),
+                        TimeUnit.MILLISECONDS.toSeconds((long)mediaPlayer.getCurrentTime().toMillis()) - 
+                        TimeUnit.MINUTES.toSeconds(
+                            TimeUnit.MILLISECONDS.toMinutes(
+                                (long)mediaPlayer.getCurrentTime().toMillis()
+                            )));
+                    return form; }});
+    }
     @FXML
-    private void nextSong(ActionEvent event) 
+    private void nextSong(ActionEvent event) throws URISyntaxException 
     {
-        if (!isPlaying) {
-            currentSong = 0;
-        }
-        if (isPlaying) {
-            currentSong++;
-        }
-        mediaPlayer.play();
+        getNextSong();
     }
 
+    private void getNextSong() throws URISyntaxException
+    {
+        mediaPlayer.getOnEndOfMedia();
+        songsfelt.getSelectionModel().getSelectedItem();
+        PlaylistSongsFelt.getSelectionModel().getSelectedItem();
+
+        if(songsfelt.getSelectionModel().getSelectedItem() == null) 
+        {
+        PlaylistSongsFelt.getSelectionModel().selectNext();
+        PlaylistSongSelect(); 
+        }
+        else if(songsfelt.getSelectionModel().getSelectedItem() != null) 
+        {
+        songsfelt.getSelectionModel().selectNext();    
+        SongSelect(); 
+        }
+            mediaPlayer.stop();
+            URI songURI = new URI(songPath);
+            playSong(songURI);
+    }
+    
+    public void SongSelect() 
+    {
+    PlaylistSongsFelt.getSelectionModel().clearSelection();
+    songPath = songsfelt.getSelectionModel().getSelectedItem().getPath();
+    }
+    
+    public void PlaylistSongSelect() 
+    {
+    songsfelt.getSelectionModel().clearSelection();
+    songPath = PlaylistSongsFelt.getSelectionModel().getSelectedItem().getPath();
+    }
     @FXML
     private void searchForSong(ActionEvent event) throws SQLException {
         reload();
@@ -336,5 +449,33 @@ public class MainWindowController implements Initializable {
                 
             }
          }
+
+    @FXML
+    private void Pause(ActionEvent event)
+    {
+         if (mediaPlayer.getStatus() == MediaPlayer.Status.PLAYING)
+        {
+            mediaPlayer.pause();
+        }
+    }
+
+    @FXML
+    private void Stop(ActionEvent event)
+    {
+        mediaPlayer.stop();
+    }
+
+    @FXML
+    private void VolumeUpandDown(MouseEvent event)
+    {
+        Volume.setValue(mediaPlayer.getVolume() * 100);
+        Volume.valueProperty().addListener(new InvalidationListener() 
+        {        
+        @Override
+        public void invalidated(Observable observable) 
+        {
+        mediaPlayer.setVolume(Volume.getValue() /100);
+        }});
+    }
     
 }
