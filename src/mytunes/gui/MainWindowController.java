@@ -34,12 +34,15 @@ import javafx.scene.input.MouseEvent;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.beans.binding.StringBinding;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Slider;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer; 
@@ -59,7 +62,7 @@ public class MainWindowController implements Initializable {
     private Playlist selectedPlaylist;
     private PlaylistSong selectedPlaySong;
     MediaPlayer mediaPlayer = null;
-    String songPath = "C:\\Users\\maxim\\Desktop\\music\\Steampianist - Rust - Feat. Sonata.mp3";
+    String songPath = "http://www.freexmasmp3.com/files/silent-night-disco.mp3";
     private boolean isPlaying = false;
     private int currentSong;
 
@@ -159,6 +162,21 @@ public class MainWindowController implements Initializable {
 //        playlistfelt.setItems(PlaylistModel.getAllPlaylists());
         } catch (SQLException ex) {
             Logger.getLogger(MainWindowController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try
+        {
+            URI songURI = new URI(songPath);
+            mediaPlayer = new MediaPlayer(new Media(songURI.toString()));
+            bindPlayerToGUI();
+        }
+        catch (URISyntaxException|UnsupportedOperationException ex)
+        {
+            Logger.getLogger(MainWindowController.class.getName()).log(Level.SEVERE, null, ex);
+            
+            Alert alert = 
+                new Alert(Alert.AlertType.ERROR, 
+                            songPath + " not a usable URI" + ex.getMessage()){};
+            alert.show();
         }
 
     }    
@@ -303,8 +321,7 @@ public class MainWindowController implements Initializable {
         SongSelect(); 
         }    
             mediaPlayer.stop();
-            URI songURI = new URI(songPath);
-            playSong(songURI);
+            playSong(toMedia());
     }
 
     @FXML
@@ -315,8 +332,7 @@ public class MainWindowController implements Initializable {
         else
         { 
             mediaPlayer.stop(); 
-            URI songURI = new URI(songPath);
-            playSong(songURI);
+            playSong(toMedia());
             mediaPlayer.setOnEndOfMedia(new Runnable() 
             {
                 @Override
@@ -343,18 +359,19 @@ public class MainWindowController implements Initializable {
 //        MP3Player.stop();
 //        }
     }
-    public void playSong(URI songURI) {
+    public void playSong(Media songMedia) {
         //This method starts running the current song, and also gives the Label a name to put on the window.//
-            mediaPlayer = new MediaPlayer(new Media(songURI.toString()));
+            mediaPlayer = new MediaPlayer(songMedia);
             songsfelt.getSelectionModel().getSelectedItem();
-//            if(songsfelt.getSelectionModel().getSelectedItem() == null) {
-//            nuværderSang.setText(PlaylistSongsFelt.getSelectionModel().getSelectedItem().getName());}
-//            else {
-//            nuværderSang.setText(songsfelt.getSelectionModel().getSelectedItem().getName()); }
-//            bindPlayerToGUI();
+            if(songsfelt.getSelectionModel().getSelectedItem() == null) {
+            nuværderSang.setText(PlaylistSongsFelt.getSelectionModel().getSelectedItem().getTitle());}
+            else {
+            nuværderSang.setText(songsfelt.getSelectionModel().getSelectedItem().getTitle()); }
+            bindPlayerToGUI();
             mediaPlayer.play();
         } 
-private void bindPlayerToGUI() 
+    
+    private void bindPlayerToGUI() 
     {
         label.textProperty().bind(
             new StringBinding()
@@ -398,8 +415,8 @@ private void bindPlayerToGUI()
         SongSelect(); 
         }
             mediaPlayer.stop();
-            URI songURI = new URI(songPath);
-            playSong(songURI);
+            
+            playSong(toMedia());
     }
     
     public void SongSelect() 
@@ -476,6 +493,13 @@ private void bindPlayerToGUI()
         {
         mediaPlayer.setVolume(Volume.getValue() /100);
         }});
+    }
+    
+    private Media toMedia()
+    {
+        String file = new File(songPath).toURI().toString();
+        Media songMedia = new Media(file);
+        return songMedia;
     }
     
 }

@@ -8,7 +8,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="584.0" prefWidth="881.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MyTunes.gui.MainWindowController">
+<AnchorPane id="AnchorPane" prefHeight="584.0" prefWidth="881.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MyTunes.gui.MainWindowController">
     <children>
         <Button fx:id="PlaylistsNew" layoutX="14.0" layoutY="542.0" onAction="#newPlaylist" text="New" />
         <Label fx:id="label" layoutX="126" layoutY="120" minHeight="16" minWidth="69" />
@@ -32,7 +32,7 @@
           <TableColumn fx:id="playTime" prefWidth="100.79999542236328" text="Time" />
         </columns>
       </TableView>
-      <TableView fx:id="songsfelt" layoutX="566.0" layoutY="103.0" prefHeight="435.0" prefWidth="299.0">
+      <TableView fx:id="songsfelt" layoutX="566.0" layoutY="103.0" onMouseClicked="#SongSelect" prefHeight="435.0" prefWidth="299.0">
          <columns>
             <TableColumn fx:id="titleColumn" prefWidth="75.0" text="Title" />
             <TableColumn fx:id="artistColumn" prefWidth="75.0" text="Artist" />
@@ -46,7 +46,7 @@
       <Button fx:id="SongsClose" layoutX="792.0" layoutY="544.0" onAction="#closeMyTunes" text="Close" />
       <Label layoutX="558.0" layoutY="78.0" text="Songs" />
       <Label layoutX="18.0" layoutY="76.0" text="Playlists" />
-      <TableView fx:id="PlaylistSongsFelt" layoutX="308.0" layoutY="103.0" prefHeight="435.0" prefWidth="162.0">
+      <TableView fx:id="PlaylistSongsFelt" layoutX="308.0" layoutY="103.0" onMouseClicked="#PlaylistSongSelect" prefHeight="435.0" prefWidth="162.0">
         <columns>
           <TableColumn fx:id="PlayOrder" prefWidth="31.0" text="#" />
             <TableColumn fx:id="playlistSongs" prefWidth="130.0" text="Songs on Playlist" />
