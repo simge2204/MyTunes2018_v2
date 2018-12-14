@@ -5,7 +5,6 @@
  */
 package MyTunes.gui;
 
-import MyTunes.be.MP3Player;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
@@ -57,7 +56,6 @@ public class MainWindowController implements Initializable {
     MyTunes.be.SongModel SongModel = new MyTunes.be.SongModel();
     MyTunes.be.PlaylistModel PlaylistModel = new MyTunes.be.PlaylistModel();
     MyTunes.be.PlaylistSongModel PlaylistSongModel = new MyTunes.be.PlaylistSongModel();
-    MyTunes.be.MP3Player MP3Player = new MyTunes.be.MP3Player(); 
     private Song selectedSong;
     private Playlist selectedPlaylist;
     private PlaylistSong selectedPlaySong;

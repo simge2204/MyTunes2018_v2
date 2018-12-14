@@ -8,7 +8,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="584.0" prefWidth="881.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MyTunes.gui.MainWindowController">
+<AnchorPane id="AnchorPane" prefHeight="584.0" prefWidth="989.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MyTunes.gui.MainWindowController">
     <children>
         <Button fx:id="PlaylistsNew" layoutX="14.0" layoutY="542.0" onAction="#newPlaylist" text="New" />
         <Label fx:id="label" layoutX="126" layoutY="120" minHeight="16" minWidth="69" />
@@ -16,9 +16,9 @@
       <Button fx:id="PlaylistsDelete" layoutX="111.0" layoutY="543.0" onAction="#deletePlaylist" text="Delete" />
       <Button fx:id="SongsonPlaylistUp" layoutX="314.0" layoutY="544.0" onAction="#playlistSongUp" text="Up" />
       <Button fx:id="SongsonPlaylistNed" layoutX="358.0" layoutY="544.0" onAction="#playlistSongDown" text="Ned" />
-      <Button fx:id="SongsDelete" layoutX="732.0" layoutY="544.0" onAction="#deleteSong" text="Delete" />
-      <Button fx:id="SongsEdit" layoutX="684.0" layoutY="544.0" onAction="#editSong" text="Edit" />
-      <Button fx:id="SongsNew" layoutX="633.0" layoutY="544.0" onAction="#newSong" text="New" />
+      <Button fx:id="SongsDelete" layoutX="870.0" layoutY="542.0" onAction="#deleteSong" text="Delete" />
+      <Button fx:id="SongsEdit" layoutX="822.0" layoutY="542.0" onAction="#editSong" text="Edit" />
+      <Button fx:id="SongsNew" layoutX="771.0" layoutY="542.0" onAction="#newSong" text="New" />
       <Button fx:id="SongsonPlaylistDelete" layoutX="408.0" layoutY="544.0" onAction="#deleteFromPlaylist" text="Delete" />
       <Button fx:id="tilbage" layoutX="64.0" layoutY="47.0" onAction="#prevSong" text="Tilbage" />
       <Button fx:id="spil" layoutX="128.0" layoutY="47.0" onAction="#playPauseSong" text="Spil" />
@@ -32,18 +32,18 @@
           <TableColumn fx:id="playTime" prefWidth="100.79999542236328" text="Time" />
         </columns>
       </TableView>
-      <TableView fx:id="songsfelt" layoutX="566.0" layoutY="103.0" onMouseClicked="#SongSelect" prefHeight="435.0" prefWidth="299.0">
+      <TableView fx:id="songsfelt" layoutX="566.0" layoutY="103.0" onMouseClicked="#SongSelect" prefHeight="435.0" prefWidth="418.0">
          <columns>
-            <TableColumn fx:id="titleColumn" prefWidth="75.0" text="Title" />
-            <TableColumn fx:id="artistColumn" prefWidth="75.0" text="Artist" />
-            <TableColumn fx:id="timeColumn" prefWidth="75.0" text="Time" />
-            <TableColumn fx:id="genreColumn" prefWidth="75.0" text="Genre" />
+            <TableColumn fx:id="titleColumn" prefWidth="116.00006103515625" text="Title" />
+            <TableColumn fx:id="artistColumn" prefWidth="111.199951171875" text="Artist" />
+            <TableColumn fx:id="timeColumn" prefWidth="76.7999267578125" text="Time" />
+            <TableColumn fx:id="genreColumn" prefWidth="114.4000244140625" text="Genre" />
          </columns>
       </TableView>
       <Button fx:id="tilVentes" layoutX="488.0" layoutY="103.0" onAction="#handleButtonAction" text="til Ventes" />
       <Button fx:id="søge" layoutX="777.0" layoutY="14.0" onAction="#searchForSong" text="Søge" />
       <TextField fx:id="søgefelt" layoutX="580.0" layoutY="14.0" />
-      <Button fx:id="SongsClose" layoutX="792.0" layoutY="544.0" onAction="#closeMyTunes" text="Close" />
+      <Button fx:id="SongsClose" layoutX="930.0" layoutY="542.0" onAction="#closeMyTunes" text="Close" />
       <Label layoutX="558.0" layoutY="78.0" text="Songs" />
       <Label layoutX="18.0" layoutY="76.0" text="Playlists" />
       <TableView fx:id="PlaylistSongsFelt" layoutX="308.0" layoutY="103.0" onMouseClicked="#PlaylistSongSelect" prefHeight="435.0" prefWidth="162.0">
