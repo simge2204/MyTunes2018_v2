@@ -6,12 +6,10 @@
 
 package MyTunes.be;
 
-import java.io.File;
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import MyTunes.bll.BLLManager;
-import MyTunes.be.Song;
 import java.sql.SQLException;
 /**
  *

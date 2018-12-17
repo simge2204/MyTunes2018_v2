@@ -5,15 +5,11 @@
  */
 package MyTunes.be;
 
-import java.io.File;
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import MyTunes.bll.BLLManager;
-import MyTunes.be.PlaylistSong;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 /**
  *
  * @author kedde
